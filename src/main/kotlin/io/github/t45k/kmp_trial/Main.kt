@@ -1,11 +1,21 @@
 package io.github.t45k.kmp_trial
 
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.key
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.navigation.NavHostController
@@ -16,7 +26,26 @@ import io.github.t45k.kmp_trial.util.onKeyDown
 
 @Composable
 fun Slide(index: Int) {
-    Text("Slide $index\nNext ${index + 1}")
+    Box(
+        Modifier.fillMaxWidth().padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "Slide $index",
+            fontSize = 64.sp,
+            fontWeight = FontWeight.Bold,
+        )
+    }
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Text("Line 1")
+        Text("Line 2")
+        Text("Line 3")
+    }
 }
 
 fun moveSlideEvent(navController: NavHostController): (KeyEvent) -> Boolean = onKeyDown {
@@ -49,7 +78,7 @@ fun main() = application {
     ) {
         NavHost(navController, startDestination = "1") {
             (1..100).forEach { index ->
-                composable(index.toString()) {
+                composable(route = index.toString()) {
                     Slide(index)
                 }
             }
