@@ -39,9 +39,9 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
                     popEnterTransition = { slideTransition.popEnter },
                     popExitTransition = { slideTransition.popExit }
                 ) {
-                    Column(Modifier.fillMaxSize()) {
+                    Column(Modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 12.dp)) {
                         Box(
-                            Modifier.fillMaxWidth().padding(12.dp),
+                            Modifier.fillMaxWidth(),
                             contentAlignment = when (slide.headerPosition) {
                                 Horizontal.LEFT -> Alignment.CenterStart
                                 Horizontal.CENTER -> Alignment.Center
@@ -53,6 +53,8 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
                                 fontWeight = FontWeight.Bold,
                             )
                         }
+
+                        Box(Modifier.fillMaxWidth().padding(vertical = 4.dp))
 
                         Column(
                             modifier = Modifier.fillMaxSize(),
