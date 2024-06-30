@@ -1,6 +1,5 @@
 package io.github.t45k.kmp_trial
 
-import io.github.t45k.kmp_trial.api.Animation
 import io.github.t45k.kmp_trial.api.PresentationOption
 import io.github.t45k.kmp_trial.api.presentation
 import kotlin.test.Test
@@ -9,9 +8,15 @@ class MainKtTest {
 
     @Test
     fun testPresentation() {
-        presentation(PresentationOption(animation = Animation.NO_ANIMATION)) {
+        presentation(PresentationOption()) {
             slide {
                 title("Hello World")
+                par("Let's start")
+                par("Let's start")
+                par("Let's start")
+                par("Let's start")
+                par("Let's start")
+                par("Let's start")
                 par("Let's start")
             }
 

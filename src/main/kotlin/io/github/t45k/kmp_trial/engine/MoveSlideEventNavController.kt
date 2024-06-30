@@ -9,7 +9,7 @@ import io.github.t45k.kmp_trial.util.onKeyDown
 class MoveSlideEventNavController(
     private val navHostController: NavHostController,
     private val slideCount: Int,
-) : NavHostController() {
+) {
     fun moveSlideEvent(): (KeyEvent) -> Boolean = onKeyDown {
         when (it.key) {
             Key.Enter, Key.DirectionRight, Key.DirectionDown -> {

@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.navigation.compose.NavHost
@@ -37,27 +37,29 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
                     popEnterTransition = { slideTransition.popEnter },
                     popExitTransition = { slideTransition.popExit }
                 ) {
-                    Box(
-                        Modifier.fillMaxWidth().padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = slide.title,
-                            fontSize = 64.sp,
-                            fontWeight = FontWeight.Bold,
-                        )
-                    }
-
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                    ) {
-                        slide.paragraphs.forEach { parText ->
+                    Column(Modifier.fillMaxSize()) {
+                        Box(
+                            Modifier.fillMaxWidth().padding(10.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
                             Text(
-                                text = parText,
-                                fontSize = 32.sp,
+                                text = slide.title,
+                                fontSize = 4.em,
+                                fontWeight = FontWeight.Bold,
                             )
+                        }
+
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.Start,
+                            verticalArrangement = Arrangement.Top,
+                        ) {
+                            slide.paragraphs.forEach { parText ->
+                                Text(
+                                    text = parText,
+                                    fontSize = 3.em,
+                                )
+                            }
                         }
                     }
                 }
