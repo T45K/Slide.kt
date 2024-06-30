@@ -2,10 +2,10 @@ package io.github.t45k.kmp_trial.api
 
 import io.github.t45k.kmp_trial.engine.handlePresentation
 
-fun presentation(block: Presentation.() -> Unit) {
+fun presentation(option: PresentationOption = PresentationOption(), block: Presentation.() -> Unit) {
     val presentation = Presentation().apply(block)
 
-    handlePresentation(presentation)
+    handlePresentation(presentation, option)
 }
 
 class Presentation {

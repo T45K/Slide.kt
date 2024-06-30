@@ -21,9 +21,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.t45k.kmp_trial.api.Presentation
+import io.github.t45k.kmp_trial.api.PresentationOption
 
-fun handlePresentation(presentation: Presentation) = application {
+fun handlePresentation(presentation: Presentation, option: PresentationOption) = application {
     val navController = rememberNavController()
+    val slideTransition = slideTransition(option.animation)
     Window(
         onCloseRequest = ::exitApplication,
         title = "Slide.kt",
@@ -33,30 +35,10 @@ fun handlePresentation(presentation: Presentation) = application {
             presentation.slides.forEachIndexed { index, slide ->
                 composable(
                     route = (index + 1).toString(),
-                    enterTransition = {
-                        slideInHorizontally(
-                            initialOffsetX = { fullWidth -> fullWidth },
-                            animationSpec = tween()
-                        )
-                    },
-                    exitTransition = {
-                        slideOutHorizontally(
-                            targetOffsetX = { fullWidth -> -fullWidth },
-                            animationSpec = tween()
-                        )
-                    },
-                    popEnterTransition = {
-                        slideInHorizontally(
-                            initialOffsetX = { fullWidth -> -fullWidth },
-                            animationSpec = tween()
-                        )
-                    },
-                    popExitTransition = {
-                        slideOutHorizontally(
-                            targetOffsetX = { fullWidth -> fullWidth },
-                            animationSpec = tween()
-                        )
-                    }
+                    enterTransition = { slideTransition.enter },
+                    exitTransition = { slideTransition.exist },
+                    popEnterTransition = { slideTransition.popEnter },
+                    popExitTransition = { slideTransition.popExit }
                 ) {
                     Box(
                         Modifier.fillMaxWidth().padding(16.dp),
