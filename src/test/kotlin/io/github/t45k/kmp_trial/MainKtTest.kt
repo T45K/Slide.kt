@@ -1,6 +1,8 @@
 package io.github.t45k.kmp_trial
 
+import io.github.t45k.kmp_trial.api.Horizontal
 import io.github.t45k.kmp_trial.api.PresentationOption
+import io.github.t45k.kmp_trial.api.Vertical
 import io.github.t45k.kmp_trial.api.presentation
 import kotlin.test.Test
 
@@ -9,25 +11,20 @@ class MainKtTest {
     @Test
     fun testPresentation() {
         presentation(PresentationOption()) {
-            slide {
-                title("Hello World")
-                par("Let's start")
-                par("Let's start")
-                par("Let's start")
-                par("Let's start")
-                par("Let's start")
-                par("Let's start")
+            headerSlide(
+                "Hello World",
+                headerPosition = Horizontal.LEFT,
+                paragraphPosition = Horizontal.LEFT to Vertical.TOP
+            ) {
                 par("Let's start")
             }
 
-            slide {
-                title("hoge")
+            headerSlide("hoge") {
                 par("abcd")
                 par("efgh")
             }
 
-            slide {
-                title("fuga")
+            headerSlide("fuga") {
                 par("1234")
                 par("5678")
             }

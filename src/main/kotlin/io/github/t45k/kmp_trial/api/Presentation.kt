@@ -9,20 +9,24 @@ fun presentation(option: PresentationOption = PresentationOption(), block: Prese
 }
 
 class Presentation {
-    internal val slides: MutableList<Slide> = mutableListOf()
+    internal val slides: MutableList<HeaderSlide> = mutableListOf()
 
-    fun slide(block: Slide.() -> Unit) {
-        slides.add(Slide().apply(block))
+    fun headerSlide(
+        title: String,
+        headerPosition: Horizontal = Horizontal.CENTER,
+        paragraphPosition: Pair<Horizontal, Vertical> = Horizontal.CENTER to Vertical.CENTER,
+        block: HeaderSlide.() -> Unit,
+    ) {
+        slides.add(HeaderSlide(title, headerPosition, paragraphPosition).apply(block))
     }
 }
 
-class Slide {
-    internal lateinit var title: String
+class HeaderSlide(
+    internal val title: String,
+    internal val headerPosition: Horizontal,
+    internal val paragraphPosition: Pair<Horizontal, Vertical>,
+) {
     internal val paragraphs: MutableList<String> = mutableListOf()
-
-    fun title(text: String) {
-        title = text
-    }
 
     fun paragraph(text: String) {
         paragraphs += text

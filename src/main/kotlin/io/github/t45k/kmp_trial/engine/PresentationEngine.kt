@@ -17,8 +17,10 @@ import androidx.compose.ui.window.application
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import io.github.t45k.kmp_trial.api.Horizontal
 import io.github.t45k.kmp_trial.api.Presentation
 import io.github.t45k.kmp_trial.api.PresentationOption
+import io.github.t45k.kmp_trial.api.Vertical
 
 fun handlePresentation(presentation: Presentation, option: PresentationOption) = application {
     val navController = rememberNavController()
@@ -39,8 +41,11 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
                 ) {
                     Column(Modifier.fillMaxSize()) {
                         Box(
-                            Modifier.fillMaxWidth().padding(10.dp),
-                            contentAlignment = Alignment.Center
+                            Modifier.fillMaxWidth().padding(12.dp),
+                            contentAlignment = when (slide.headerPosition) {
+                                Horizontal.LEFT -> Alignment.CenterStart
+                                Horizontal.CENTER -> Alignment.Center
+                            }
                         ) {
                             Text(
                                 text = slide.title,
@@ -51,8 +56,14 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
 
                         Column(
                             modifier = Modifier.fillMaxSize(),
-                            horizontalAlignment = Alignment.Start,
-                            verticalArrangement = Arrangement.Top,
+                            verticalArrangement = when (slide.paragraphPosition.second) {
+                                Vertical.TOP -> Arrangement.Top
+                                Vertical.CENTER -> Arrangement.Center
+                            },
+                            horizontalAlignment = when (slide.paragraphPosition.first) {
+                                Horizontal.LEFT -> Alignment.Start
+                                Horizontal.CENTER -> Alignment.CenterHorizontally
+                            },
                         ) {
                             slide.paragraphs.forEach { parText ->
                                 Text(
