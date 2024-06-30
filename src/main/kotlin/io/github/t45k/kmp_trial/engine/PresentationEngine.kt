@@ -28,7 +28,12 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
     Window(
         onCloseRequest = ::exitApplication,
         title = "Slide.kt",
-        onKeyEvent = MoveSlideEventNavController(navController, presentation.slides.size).moveSlideEvent(),
+        onKeyEvent = moveSlideEvent(
+            { navController.currentDestination!!.route!!.toInt() },
+            { navController.navigate(it.toString()) },
+            { navController.popBackStack() },
+            presentation.slides.size,
+        ),
     ) {
         NavHost(navController, startDestination = "1") {
             presentation.slides.forEachIndexed { index, slide ->
