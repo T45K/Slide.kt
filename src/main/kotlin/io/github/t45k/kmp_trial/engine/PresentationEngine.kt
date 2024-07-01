@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
@@ -59,7 +59,10 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
                                     (windowState.size.width) / (windowState.size.height) > option.aspectRatio.ratio
                                 )
                                 .background(Color.White)
-                                .padding(horizontal = 12.dp, vertical = 12.dp)
+                                .padding(
+                                    horizontal = windowState.size.height / 72,
+                                    vertical = windowState.size.height / 72,
+                                )
                         ) {
                             Box(
                                 Modifier.fillMaxWidth(),
@@ -70,7 +73,7 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
                             ) {
                                 Text(
                                     text = slide.title,
-                                    fontSize = 4.em,
+                                    fontSize = (windowState.size.height / 12).value.sp,
                                     fontWeight = FontWeight.Bold,
                                 )
                             }
@@ -91,7 +94,7 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
                                 slide.paragraphs.forEach { parText ->
                                     Text(
                                         text = parText,
-                                        fontSize = 3.em,
+                                        fontSize = (windowState.size.height / 16).value.sp,
                                     )
                                 }
                             }
