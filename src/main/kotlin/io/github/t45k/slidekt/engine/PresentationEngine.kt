@@ -37,7 +37,6 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
             )
         ),
     ) {
-        windowState.placement
         NavHost(navController, startDestination = "1") {
             presentation.slides.forEachIndexed { index, slide ->
                 composable(

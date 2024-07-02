@@ -44,8 +44,8 @@ private fun SlideContent(
         )
         .background(bgColor())
         .padding(
-            horizontal = slideHeight / 72,
-            vertical = slideHeight / 72,
+            horizontal = slideHeight / 24,
+            vertical = slideHeight / 24,
         ),
     content = content,
 )
