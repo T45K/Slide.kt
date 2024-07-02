@@ -35,3 +35,5 @@ compose.desktop {
         }
     }
 }
+
+kotlin.compilerOptions.freeCompilerArgs.add("-Xcontext-receivers")

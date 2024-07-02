@@ -8,7 +8,7 @@ class MainKtTest {
 
     @Test
     fun testPresentation() {
-        presentation(PresentationOption()) {
+        presentation(PresentationOption(darkMode = true)) {
             slide {
                 title("Hello World")
                 textBox {

@@ -9,9 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import io.github.t45k.slidekt.api.Horizontal
+import io.github.t45k.slidekt.api.PresentationOption
 import io.github.t45k.slidekt.api.Title
 import io.github.t45k.slidekt.util.sp
+import io.github.t45k.slidekt.util.textColor
 
+context(PresentationOption)
 @Composable
 fun Title(title: Title, slideHeight: Dp) = Box(
     Modifier.fillMaxWidth(),
@@ -24,5 +27,6 @@ fun Title(title: Title, slideHeight: Dp) = Box(
         text = title.text,
         fontSize = (slideHeight / 12).sp(),
         fontWeight = FontWeight.Bold,
+        color = textColor(),
     )
 }

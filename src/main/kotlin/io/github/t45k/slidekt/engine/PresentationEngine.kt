@@ -1,6 +1,7 @@
 package io.github.t45k.slidekt.engine
 
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import androidx.navigation.compose.NavHost
@@ -22,13 +23,21 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
         onCloseRequest = ::exitApplication,
         state = windowState,
         title = "Slide.kt",
-        onKeyEvent = moveSlideEvent(
-            { navController.currentDestination!!.route!!.toInt() },
-            { navController.navigate(it.toString()) },
-            { navController.popBackStack() },
-            presentation.slides.size,
+        onKeyEvent = mergeKeyEvent(
+            fullScreenEvent(
+                { windowState.placement == WindowPlacement.Fullscreen },
+                { windowState.placement = WindowPlacement.Fullscreen },
+                { windowState.placement = WindowPlacement.Floating },
+            ),
+            moveSlideEvent(
+                { navController.currentDestination!!.route!!.toInt() },
+                { navController.navigate(it.toString()) },
+                { navController.popBackStack() },
+                presentation.slides.size,
+            )
         ),
     ) {
+        windowState.placement
         NavHost(navController, startDestination = "1") {
             presentation.slides.forEachIndexed { index, slide ->
                 composable(
@@ -42,14 +51,16 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
                     val matchHeightConstraintsFirst =
                         windowState.size.width / windowState.size.height > option.aspectRatio.ratio
 
-                    Slide(option, currentSlideHeight, matchHeightConstraintsFirst) {
-                        slide.title?.let { title -> Title(title, currentSlideHeight) }
+                    with(option) {
+                        Slide(currentSlideHeight, matchHeightConstraintsFirst) {
+                            slide.title?.let { title -> Title(title, currentSlideHeight) }
 
-                        if (slide.title != null && slide.textBox != null) {
-                            TitleTextBoxSeparator(currentSlideHeight)
+                            if (slide.title != null && slide.textBox != null) {
+                                TitleTextBoxSeparator(currentSlideHeight)
+                            }
+
+                            slide.textBox?.let { textBox -> TextBox(textBox, currentSlideHeight) }
                         }
-
-                        slide.textBox?.let { textBox -> TextBox(textBox, currentSlideHeight) }
                     }
                 }
             }
