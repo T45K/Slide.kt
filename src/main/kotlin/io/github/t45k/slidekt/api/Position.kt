@@ -1,4 +1,4 @@
-package io.github.t45k.kmp_trial.api
+package io.github.t45k.slidekt.api
 
 enum class Horizontal {
     LEFT, CENTER,

@@ -1,4 +1,4 @@
-package io.github.t45k.kmp_trial.engine
+package io.github.t45k.slidekt.engine
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -10,7 +10,7 @@ import androidx.compose.animation.slideOut
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.ui.unit.IntOffset
-import io.github.t45k.kmp_trial.api.Animation
+import io.github.t45k.slidekt.api.Animation
 
 data class SlideTransition(
     val enter: EnterTransition,

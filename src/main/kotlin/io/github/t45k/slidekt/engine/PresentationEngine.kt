@@ -1,4 +1,4 @@
-package io.github.t45k.kmp_trial.engine
+package io.github.t45k.slidekt.engine
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,10 +21,10 @@ import androidx.compose.ui.window.rememberWindowState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.github.t45k.kmp_trial.api.Horizontal
-import io.github.t45k.kmp_trial.api.Presentation
-import io.github.t45k.kmp_trial.api.PresentationOption
-import io.github.t45k.kmp_trial.api.Vertical
+import io.github.t45k.slidekt.api.Horizontal
+import io.github.t45k.slidekt.api.Presentation
+import io.github.t45k.slidekt.api.PresentationOption
+import io.github.t45k.slidekt.api.Vertical
 
 fun handlePresentation(presentation: Presentation, option: PresentationOption) = application {
     val navController = rememberNavController()

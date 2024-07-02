@@ -28,11 +28,9 @@ dependencies {
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
-
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "kmp-trial"
+            packageName = "slidekt"
             packageVersion = "1.0.0"
         }
     }

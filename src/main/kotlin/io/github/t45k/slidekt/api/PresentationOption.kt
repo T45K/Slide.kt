@@ -1,4 +1,4 @@
-package io.github.t45k.kmp_trial.api
+package io.github.t45k.slidekt.api
 
 data class PresentationOption(
     val animation: Animation = Animation.FROM_RIGHT_TO_LEFT,
