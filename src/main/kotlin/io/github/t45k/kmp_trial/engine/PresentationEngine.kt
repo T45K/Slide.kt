@@ -64,38 +64,42 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
                                     vertical = windowState.size.height / 72,
                                 )
                         ) {
-                            Box(
-                                Modifier.fillMaxWidth(),
-                                contentAlignment = when (slide.headerPosition) {
-                                    Horizontal.LEFT -> Alignment.CenterStart
-                                    Horizontal.CENTER -> Alignment.Center
+                            slide.title?.let { title ->
+                                Box(
+                                    Modifier.fillMaxWidth(),
+                                    contentAlignment = when (title.position) {
+                                        Horizontal.LEFT -> Alignment.CenterStart
+                                        Horizontal.CENTER -> Alignment.Center
+                                    }
+                                ) {
+                                    Text(
+                                        text = title.text,
+                                        fontSize = (windowState.size.height / 12).value.sp,
+                                        fontWeight = FontWeight.Bold,
+                                    )
                                 }
-                            ) {
-                                Text(
-                                    text = slide.title,
-                                    fontSize = (windowState.size.height / 12).value.sp,
-                                    fontWeight = FontWeight.Bold,
-                                )
                             }
 
                             Box(Modifier.fillMaxWidth().padding(vertical = 4.dp))
 
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalArrangement = when (slide.paragraphPosition.second) {
-                                    Vertical.TOP -> Arrangement.Top
-                                    Vertical.CENTER -> Arrangement.Center
-                                },
-                                horizontalAlignment = when (slide.paragraphPosition.first) {
-                                    Horizontal.LEFT -> Alignment.Start
-                                    Horizontal.CENTER -> Alignment.CenterHorizontally
-                                },
-                            ) {
-                                slide.paragraphs.forEach { parText ->
-                                    Text(
-                                        text = parText,
-                                        fontSize = (windowState.size.height / 16).value.sp,
-                                    )
+                            slide.textBox?.let { textBox ->
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    verticalArrangement = when (textBox.verticalPosition) {
+                                        Vertical.TOP -> Arrangement.Top
+                                        Vertical.CENTER -> Arrangement.Center
+                                    },
+                                    horizontalAlignment = when (textBox.horizontalPosition) {
+                                        Horizontal.LEFT -> Alignment.Start
+                                        Horizontal.CENTER -> Alignment.CenterHorizontally
+                                    },
+                                ) {
+                                    textBox.paragraphs.forEach { paragraph ->
+                                        Text(
+                                            text = paragraph.text,
+                                            fontSize = (windowState.size.height / 16).value.sp,
+                                        )
+                                    }
                                 }
                             }
                         }
