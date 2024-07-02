@@ -1,4 +1,4 @@
-package io.github.t45k.kmp_trial.util
+package io.github.t45k.slidekt.util
 
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType

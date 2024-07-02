@@ -1,9 +1,9 @@
-package io.github.t45k.kmp_trial.engine
+package io.github.t45k.slidekt.engine
 
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.key
-import io.github.t45k.kmp_trial.util.onKeyDown
+import io.github.t45k.slidekt.util.onKeyDown
 
 fun moveSlideEvent(
     currentIndex: () -> Int,

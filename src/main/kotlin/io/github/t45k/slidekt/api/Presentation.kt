@@ -1,6 +1,6 @@
-package io.github.t45k.kmp_trial.api
+package io.github.t45k.slidekt.api
 
-import io.github.t45k.kmp_trial.engine.handlePresentation
+import io.github.t45k.slidekt.engine.handlePresentation
 
 fun presentation(option: PresentationOption = PresentationOption(), block: Presentation.() -> Unit) {
     val presentation = Presentation().apply(block)

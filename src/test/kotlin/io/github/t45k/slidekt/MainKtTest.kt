@@ -1,7 +1,7 @@
-package io.github.t45k.kmp_trial
+package io.github.t45k.slidekt
 
-import io.github.t45k.kmp_trial.api.PresentationOption
-import io.github.t45k.kmp_trial.api.presentation
+import io.github.t45k.slidekt.api.PresentationOption
+import io.github.t45k.slidekt.api.presentation
 import kotlin.test.Test
 
 class MainKtTest {
