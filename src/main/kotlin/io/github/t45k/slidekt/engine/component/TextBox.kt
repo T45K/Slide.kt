@@ -9,10 +9,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import io.github.t45k.slidekt.api.Horizontal
+import io.github.t45k.slidekt.api.PresentationOption
 import io.github.t45k.slidekt.api.TextBox
 import io.github.t45k.slidekt.api.Vertical
 import io.github.t45k.slidekt.util.sp
+import io.github.t45k.slidekt.util.textColor
 
+context(PresentationOption)
 @Composable
 fun TextBox(textBox: TextBox, slideHeight: Dp) = Column(
     modifier = Modifier.fillMaxSize(),
@@ -29,6 +32,7 @@ fun TextBox(textBox: TextBox, slideHeight: Dp) = Column(
         Text(
             text = paragraph.text, // TODO: when(paragraph)
             fontSize = (slideHeight / 16).sp(),
+            color = textColor(),
         )
     }
 }

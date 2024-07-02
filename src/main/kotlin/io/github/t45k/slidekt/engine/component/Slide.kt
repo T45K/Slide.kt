@@ -13,34 +13,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import io.github.t45k.slidekt.api.PresentationOption
+import io.github.t45k.slidekt.util.bgColor
 
+context(PresentationOption)
 @Composable
 fun Slide(
-    option: PresentationOption,
     slideHeight: Dp,
     matchHeightConstraintsFirst: Boolean,
     content: @Composable () -> Unit,
 ) = SlideBackground {
-    SlideContent(option, slideHeight, matchHeightConstraintsFirst) { content() }
+    SlideContent(slideHeight, matchHeightConstraintsFirst) { content() }
 }
 
+context(PresentationOption)
 @Composable
 private fun SlideBackground(slideContent: @Composable BoxScope.() -> Unit) =
-    Box(Modifier.fillMaxSize().background(Color.Black), content = slideContent)
+    Box(Modifier.fillMaxSize().background(Color.Gray), content = slideContent)
 
+context(PresentationOption)
 @Composable
 private fun SlideContent(
-    option: PresentationOption,
     slideHeight: Dp,
     matchHeightConstraintsFirst: Boolean,
     content: @Composable ColumnScope.() -> Unit
 ) = Column(
     Modifier.fillMaxSize()
         .aspectRatio(
-            option.aspectRatio.ratio,
+            aspectRatio.ratio,
             matchHeightConstraintsFirst,
         )
-        .background(Color.White)
+        .background(bgColor())
         .padding(
             horizontal = slideHeight / 72,
             vertical = slideHeight / 72,
