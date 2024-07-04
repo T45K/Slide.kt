@@ -12,7 +12,11 @@ class MainKtTest {
             slide {
                 title("Hello World")
                 textBox {
-                    s("Let's start")
+                    s("Let's start") {
+                        s("This is nest") {
+                            s("nest one more")
+                        }
+                    }
                 }
             }
 

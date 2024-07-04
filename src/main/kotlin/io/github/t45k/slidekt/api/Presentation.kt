@@ -24,6 +24,8 @@ class Slide {
         title = Title(text, position)
     }
 
+    fun title(position: Horizontal = Horizontal.CENTER, block: () -> String) = title(block(), position)
+
     fun textBox(
         horizontalPosition: Horizontal = Horizontal.CENTER,
         verticalPosition: Vertical = Vertical.CENTER,
@@ -44,30 +46,45 @@ class TextBox(
 ) {
     internal val paragraphs: MutableList<Paragraph> = mutableListOf()
 
-    fun item(text: String) {
-        paragraphs += Paragraph.Item(text)
+    fun item(text: String, nestedParagraphsBlock: (TextBox.() -> Unit) = { }) {
+        val nestedParagraphs = TextBox(horizontalPosition, verticalPosition).apply(nestedParagraphsBlock).paragraphs
+        paragraphs += Paragraph.Item(text, nestedParagraphs)
     }
 
-    fun i(text: String) = item(text)
+    fun i(text: String, nestedParagraphsBlock: (TextBox.() -> Unit) = { }) = item(text, nestedParagraphsBlock)
 
-    fun numbering(text: String) {
-        paragraphs += Paragraph.Numbering(text)
+    fun numbering(text: String, nestedParagraphsBlock: (TextBox.() -> Unit) = { }) {
+        val nestedParagraphs = TextBox(horizontalPosition, verticalPosition).apply(nestedParagraphsBlock).paragraphs
+        paragraphs += Paragraph.Numbering(text, nestedParagraphs)
     }
 
-    fun num(text: String) = numbering(text)
-    fun n(text: String) = numbering(text)
+    fun num(text: String, nestedParagraphsBlock: (TextBox.() -> Unit) = { }) = numbering(text, nestedParagraphsBlock)
+    fun n(text: String, nestedParagraphsBlock: (TextBox.() -> Unit) = { }) = numbering(text, nestedParagraphsBlock)
 
-    fun sentence(text: String) {
-        paragraphs += Paragraph.Sentence(text)
+    fun sentence(text: String, nestedParagraphsBlock: (TextBox.() -> Unit) = { }) {
+        val nestedParagraphs = TextBox(horizontalPosition, verticalPosition).apply(nestedParagraphsBlock).paragraphs
+        paragraphs += Paragraph.Sentence(text, nestedParagraphs)
     }
 
-    fun s(text: String) = sentence(text)
+    fun s(text: String, nestedParagraphsBlock: (TextBox.() -> Unit) = { }) = sentence(text, nestedParagraphsBlock)
 }
 
 sealed interface Paragraph {
     val text: String
+    val nestedParagraphs: List<Paragraph>
 
-    data class Item(override val text: String) : Paragraph
-    data class Numbering(override val text: String) : Paragraph
-    data class Sentence(override val text: String) : Paragraph
+    data class Item(
+        override val text: String,
+        override val nestedParagraphs: List<Paragraph> = emptyList()
+    ) : Paragraph
+
+    data class Numbering(
+        override val text: String,
+        override val nestedParagraphs: List<Paragraph> = emptyList(),
+    ) : Paragraph
+
+    data class Sentence(
+        override val text: String,
+        override val nestedParagraphs: List<Paragraph> = emptyList()
+    ) : Paragraph
 }
