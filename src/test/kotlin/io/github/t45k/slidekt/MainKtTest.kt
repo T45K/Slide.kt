@@ -1,14 +1,17 @@
 package io.github.t45k.slidekt
 
+import io.github.t45k.slidekt.api.Horizontal
 import io.github.t45k.slidekt.api.PresentationOption
 import io.github.t45k.slidekt.api.presentation
+import io.github.t45k.slidekt.engine.handlePresentation
+import kotlin.io.path.Path
 import kotlin.test.Test
 
 class MainKtTest {
 
     @Test
     fun testPresentation() {
-        presentation(PresentationOption(darkMode = true)) {
+        val presentation = presentation(PresentationOption(darkMode = true)) {
             slide {
                 title("Hello World")
                 textBox {
@@ -22,7 +25,7 @@ class MainKtTest {
 
             slide {
                 title("Second")
-                textBox {
+                textBox(horizontalPosition = Horizontal.LEFT) {
                     s("abcd")
                     s("efgh")
                 }
@@ -35,6 +38,12 @@ class MainKtTest {
                     s("5678")
                 }
             }
+
+            slide {
+                image(Path("me.png"))
+            }
         }
+
+        handlePresentation(presentation)
     }
 }
