@@ -14,14 +14,18 @@ class MainKtTest {
         val presentation = presentation(PresentationOption(darkMode = true)) {
             slide {
                 title("Hello World")
-                textBox(horizontalPosition = Horizontal.LEFT) {
-                    s("Let's start")
+                textBox {
+                    s("Let's start") {
+                        s("This is nest") {
+                            s("nest one more")
+                        }
+                    }
                 }
             }
 
             slide {
                 title("Second")
-                textBox {
+                textBox(horizontalPosition = Horizontal.LEFT) {
                     s("abcd")
                     s("efgh")
                 }
