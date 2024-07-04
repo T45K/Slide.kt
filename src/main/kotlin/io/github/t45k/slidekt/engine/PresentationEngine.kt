@@ -8,15 +8,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.t45k.slidekt.api.Presentation
-import io.github.t45k.slidekt.api.PresentationOption
 import io.github.t45k.slidekt.engine.component.Slide
 import io.github.t45k.slidekt.engine.component.TextBox
 import io.github.t45k.slidekt.engine.component.Title
 import io.github.t45k.slidekt.engine.component.TitleTextBoxSeparator
 
-fun handlePresentation(presentation: Presentation, option: PresentationOption) = application {
+fun handlePresentation(presentation: Presentation) = application {
     val navController = rememberNavController()
-    val slideTransition = slideTransition(option.animation)
+    val slideTransition = slideTransition(presentation.option.animation)
     val windowState = rememberWindowState()
 
     Window(
@@ -47,11 +46,11 @@ fun handlePresentation(presentation: Presentation, option: PresentationOption) =
                     popEnterTransition = { slideTransition.popEnter },
                     popExitTransition = { slideTransition.popExit }
                 ) {
-                    val (_, currentSlideHeight) = calcSlideSize(windowState.size, option.aspectRatio)
+                    val (_, currentSlideHeight) = calcSlideSize(windowState.size, presentation.option.aspectRatio)
                     val matchHeightConstraintsFirst =
-                        windowState.size.width / windowState.size.height > option.aspectRatio.ratio
+                        windowState.size.width / windowState.size.height > presentation.option.aspectRatio.ratio
 
-                    with(option) {
+                    with(presentation.option) {
                         Slide(currentSlideHeight, matchHeightConstraintsFirst) {
                             slide.title?.let { title -> Title(title, currentSlideHeight) }
 

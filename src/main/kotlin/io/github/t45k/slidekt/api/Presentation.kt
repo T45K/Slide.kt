@@ -1,14 +1,11 @@
 package io.github.t45k.slidekt.api
 
-import io.github.t45k.slidekt.engine.handlePresentation
+fun presentation(
+    presentationOption: PresentationOption = PresentationOption(),
+    block: Presentation.() -> Unit
+): Presentation = Presentation().apply(block)
 
-fun presentation(option: PresentationOption = PresentationOption(), block: Presentation.() -> Unit) {
-    val presentation = Presentation().apply(block)
-
-    handlePresentation(presentation, option)
-}
-
-class Presentation {
+class Presentation(internal val option: PresentationOption = PresentationOption()) {
     internal val slides: MutableList<Slide> = mutableListOf()
 
     fun slide(block: Slide.() -> Unit) {

@@ -2,13 +2,14 @@ package io.github.t45k.slidekt
 
 import io.github.t45k.slidekt.api.PresentationOption
 import io.github.t45k.slidekt.api.presentation
+import io.github.t45k.slidekt.engine.handlePresentation
 import kotlin.test.Test
 
 class MainKtTest {
 
     @Test
     fun testPresentation() {
-        presentation(PresentationOption(darkMode = true)) {
+        val presentation = presentation(PresentationOption(darkMode = true)) {
             slide {
                 title("Hello World")
                 textBox {
@@ -32,5 +33,7 @@ class MainKtTest {
                 }
             }
         }
+
+        handlePresentation(presentation)
     }
 }
