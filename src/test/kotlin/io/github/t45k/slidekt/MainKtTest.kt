@@ -26,8 +26,13 @@ class MainKtTest {
             slide {
                 title("Second")
                 textBox(horizontalPosition = Horizontal.LEFT) {
-                    s("abcd")
-                    s("efgh")
+                    s("こんにちは") {
+                        s("こんばんは")
+                        s("おはよう")
+                    }
+                    s("さようなら") {
+                        s("また今度")
+                    }
                 }
             }
 
