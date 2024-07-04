@@ -45,6 +45,7 @@ class MainKtTest {
             }
 
             slide {
+                title("Me")
                 image(Path("me.png"))
             }
         }

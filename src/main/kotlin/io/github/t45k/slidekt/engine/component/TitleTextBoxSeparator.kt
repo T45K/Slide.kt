@@ -8,4 +8,4 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 
 @Composable
-fun TitleTextBoxSeparator(slideHeight: Dp) = Box(Modifier.fillMaxWidth().padding(vertical = slideHeight / 72))
+fun TitleTextBoxSeparator(slideHeight: Dp) = Box(Modifier.fillMaxWidth().padding(vertical = slideHeight / 36))

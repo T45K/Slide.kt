@@ -60,7 +60,7 @@ fun handlePresentation(presentation: Presentation) = application {
                         Slide(currentSlideHeight, currentSlideWidth, matchHeightConstraintsFirst) {
                             slide.title?.let { title -> Title(title, currentSlideHeight) }
 
-                            if (slide.title != null && slide.textBox != null) {
+                            if (slide.title != null && (slide.textBox != null || slide.imagePath != null)) {
                                 TitleTextBoxSeparator(currentSlideHeight)
                             }
 
