@@ -1,5 +1,9 @@
 package io.github.t45k.slidekt.engine
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
@@ -46,12 +50,15 @@ fun handlePresentation(presentation: Presentation) = application {
                     popEnterTransition = { slideTransition.popEnter },
                     popExitTransition = { slideTransition.popExit }
                 ) {
-                    val (_, currentSlideHeight) = calcSlideSize(windowState.size, presentation.option.aspectRatio)
+                    val (currentSlideWidth, currentSlideHeight) = calcSlideSize(
+                        windowState.size,
+                        presentation.option.aspectRatio
+                    )
                     val matchHeightConstraintsFirst =
                         windowState.size.width / windowState.size.height > presentation.option.aspectRatio.ratio
 
                     with(presentation.option) {
-                        Slide(currentSlideHeight, matchHeightConstraintsFirst) {
+                        Slide(currentSlideHeight, currentSlideWidth, matchHeightConstraintsFirst) {
                             slide.title?.let { title -> Title(title, currentSlideHeight) }
 
                             if (slide.title != null && slide.textBox != null) {
@@ -59,6 +66,14 @@ fun handlePresentation(presentation: Presentation) = application {
                             }
 
                             slide.textBox?.let { textBox -> TextBox(textBox, currentSlideHeight) }
+
+                            slide.imagePath?.let {
+                                Image(
+                                    painterResource(it.toString()),
+                                    contentDescription = null,
+                                    modifier = Modifier.fillMaxSize(),
+                                )
+                            }
                         }
                     }
                 }

@@ -1,9 +1,11 @@
 package io.github.t45k.slidekt.api
 
+import java.nio.file.Path
+
 fun presentation(
-    presentationOption: PresentationOption = PresentationOption(),
+    option: PresentationOption = PresentationOption(),
     block: Presentation.() -> Unit
-): Presentation = Presentation().apply(block)
+): Presentation = Presentation(option).apply(block)
 
 class Presentation(internal val option: PresentationOption = PresentationOption()) {
     internal val slides: MutableList<Slide> = mutableListOf()
@@ -16,6 +18,7 @@ class Presentation(internal val option: PresentationOption = PresentationOption(
 class Slide {
     internal var title: Title? = null
     internal var textBox: TextBox? = null
+    internal var imagePath: Path? = null
 
     fun title(text: String, position: Horizontal = Horizontal.CENTER) {
         title = Title(text, position)
@@ -27,6 +30,10 @@ class Slide {
         block: TextBox.() -> Unit,
     ) {
         textBox = TextBox(horizontalPosition, verticalPosition).apply(block)
+    }
+
+    fun image(path: Path) {
+        imagePath = path
     }
 }
 

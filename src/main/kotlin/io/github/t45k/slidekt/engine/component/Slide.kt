@@ -19,10 +19,11 @@ context(PresentationOption)
 @Composable
 fun Slide(
     slideHeight: Dp,
+    slideWidth: Dp,
     matchHeightConstraintsFirst: Boolean,
     content: @Composable () -> Unit,
 ) = SlideBackground {
-    SlideContent(slideHeight, matchHeightConstraintsFirst) { content() }
+    SlideContent(slideHeight, slideWidth, matchHeightConstraintsFirst) { content() }
 }
 
 context(PresentationOption)
@@ -34,6 +35,7 @@ context(PresentationOption)
 @Composable
 private fun SlideContent(
     slideHeight: Dp,
+    slideWidth: Dp,
     matchHeightConstraintsFirst: Boolean,
     content: @Composable ColumnScope.() -> Unit
 ) = Column(
@@ -44,8 +46,8 @@ private fun SlideContent(
         )
         .background(bgColor())
         .padding(
-            horizontal = slideHeight / 72,
-            vertical = slideHeight / 72,
+            horizontal = slideWidth / 24,
+            vertical = slideHeight / 24,
         ),
     content = content,
 )
