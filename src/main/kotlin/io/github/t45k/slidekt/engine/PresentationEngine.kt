@@ -1,9 +1,18 @@
 package io.github.t45k.slidekt.engine
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
@@ -16,6 +25,9 @@ import io.github.t45k.slidekt.engine.component.Slide
 import io.github.t45k.slidekt.engine.component.TextBox
 import io.github.t45k.slidekt.engine.component.Title
 import io.github.t45k.slidekt.engine.component.TitleTextBoxSeparator
+import io.github.t45k.slidekt.util.sp
+import io.github.t45k.slidekt.util.textColor
+import java.time.format.DateTimeFormatter
 
 fun handlePresentation(presentation: Presentation) = application {
     val navController = rememberNavController()
@@ -37,6 +49,7 @@ fun handlePresentation(presentation: Presentation) = application {
                 { navController.navigate(it.toString()) },
                 { navController.popBackStack() },
                 presentation.slides.size,
+                hasCover = presentation.cover != null,
             )
         ),
     ) {
