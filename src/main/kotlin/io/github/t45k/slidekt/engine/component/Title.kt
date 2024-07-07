@@ -25,7 +25,7 @@ fun Title(title: Title, slideHeight: Dp) = Box(
 ) {
     Text(
         text = title.text,
-        fontSize = (slideHeight / 12).sp(),
+        fontSize = (slideHeight / 8).sp(),
         fontWeight = FontWeight.Bold,
         color = textColor(),
     )

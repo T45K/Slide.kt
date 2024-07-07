@@ -54,6 +54,7 @@ internal fun moveSlideEvent(
     navigate: (Int) -> Unit,
     navigateBack: () -> Unit,
     slideCount: Int,
+    hasCover: Boolean,
 ): OnKeyEvent = onKeyDown {
     when (it.key) {
         Key.Enter, Key.DirectionRight, Key.DirectionDown -> {
@@ -65,7 +66,8 @@ internal fun moveSlideEvent(
         }
 
         Key.DirectionLeft, Key.DirectionUp -> {
-            if (currentIndex() > 1) {
+            val startIndex = if (hasCover) 0 else 1
+            if (currentIndex() > startIndex) {
                 navigateBack()
             }
             true

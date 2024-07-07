@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.t45k.slidekt.api.Presentation
+import io.github.t45k.slidekt.engine.component.Cover
 import io.github.t45k.slidekt.engine.component.Slide
 import io.github.t45k.slidekt.engine.component.TextBox
 import io.github.t45k.slidekt.engine.component.Title
@@ -37,30 +38,45 @@ fun handlePresentation(presentation: Presentation) = application {
                 { navController.navigate(it.toString()) },
                 { navController.popBackStack() },
                 presentation.slides.size,
+                hasCover = presentation.cover != null,
             )
         ),
     ) {
-        NavHost(navController, startDestination = "1") {
-            presentation.slides.forEachIndexed { index, slide ->
-                composable(
-                    route = (index + 1).toString(),
-                    enterTransition = { slideTransition.enter },
-                    exitTransition = { slideTransition.exist },
-                    popEnterTransition = { slideTransition.popEnter },
-                    popExitTransition = { slideTransition.popExit }
-                ) {
-                    val (currentSlideWidth, currentSlideHeight) = calcSlideSize(
-                        windowState.size,
-                        presentation.option.aspectRatio
-                    )
-                    val matchHeightConstraintsFirst =
-                        windowState.size.width / windowState.size.height > presentation.option.aspectRatio.ratio
+        val (_, currentSlideHeight) = calcSlideSize(
+            windowState.size,
+            presentation.option.aspectRatio
+        )
+        val matchHeightConstraintsFirst =
+            windowState.size.width / windowState.size.height > presentation.option.aspectRatio.ratio
 
-                    with(presentation.option) {
-                        Slide(currentSlideHeight, currentSlideWidth, matchHeightConstraintsFirst) {
+        NavHost(navController, startDestination = if (presentation.cover != null) "0" else "1") {
+            with(presentation.option) {
+                presentation.cover?.let { cover ->
+                    composable(
+                        route = "0",
+                        enterTransition = { slideTransition.enter },
+                        exitTransition = { slideTransition.exist },
+                        popEnterTransition = { slideTransition.popEnter },
+                        popExitTransition = { slideTransition.popExit }
+                    ) {
+                        Slide(matchHeightConstraintsFirst) {
+                            Cover(cover, currentSlideHeight)
+                        }
+                    }
+                }
+
+                presentation.slides.forEachIndexed { index, slide ->
+                    composable(
+                        route = (index + 1).toString(),
+                        enterTransition = { slideTransition.enter },
+                        exitTransition = { slideTransition.exist },
+                        popEnterTransition = { slideTransition.popEnter },
+                        popExitTransition = { slideTransition.popExit }
+                    ) {
+                        Slide(matchHeightConstraintsFirst) {
                             slide.title?.let { title -> Title(title, currentSlideHeight) }
 
-                            if (slide.title != null && slide.textBox != null) {
+                            if (slide.title != null && (slide.textBox != null || slide.imagePath != null)) {
                                 TitleTextBoxSeparator(currentSlideHeight)
                             }
 

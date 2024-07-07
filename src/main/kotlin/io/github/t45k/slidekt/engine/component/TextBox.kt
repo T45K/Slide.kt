@@ -1,10 +1,12 @@
 package io.github.t45k.slidekt.engine.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -51,15 +53,20 @@ private fun ColumnScope.handleParagraphs(paragraphs: List<Paragraph>, indent: In
     paragraphs.forEach { paragraph ->
         Text(
             text = paragraph.text,
-            fontSize = (this@Dp / 16 - this@Dp / 96 * indent).sp(),
+            fontSize = (this@Dp / 12 - this@Dp / 96 * indent).sp(),
             color = textColor(),
             modifier = Modifier.fillMaxWidth(),
             textAlign = this@TextAlign,
             style = TextStyle.Default.copy(
-                textIndent = TextIndent((this@Dp / 16 * indent).sp())
+                textIndent = TextIndent((this@Dp / 12 * indent).sp())
             )
         )
+        Box(Modifier.fillMaxWidth().padding(this@Dp / 96))
 
         handleParagraphs(paragraph.nestedParagraphs, indent + 1)
+
+        if (indent == 0) {
+            Box(Modifier.fillMaxWidth().padding(this@Dp / 48))
+        }
     }
 }
