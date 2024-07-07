@@ -1,6 +1,7 @@
 package io.github.t45k.slidekt.api
 
 import java.nio.file.Path
+import java.time.LocalDate
 
 fun presentation(
     option: PresentationOption = PresentationOption(),
@@ -8,10 +9,42 @@ fun presentation(
 ): Presentation = Presentation(option).apply(block)
 
 class Presentation(internal val option: PresentationOption = PresentationOption()) {
+    internal var cover: Cover? = null
     internal val slides: MutableList<Slide> = mutableListOf()
+
+    fun cover(
+        title: String,
+        name: String,
+        horizontalPosition: Horizontal = Horizontal.CENTER,
+        block: Cover.() -> Unit = {}
+    ) {
+        cover = Cover(title, name, horizontalPosition).apply(block)
+    }
 
     fun slide(block: Slide.() -> Unit) {
         slides.add(Slide().apply(block))
+    }
+}
+
+class Cover(
+    internal val title: String,
+    internal val presenterName: String,
+    internal val position: Horizontal = Horizontal.CENTER,
+) {
+    internal var date: LocalDate? = null
+    internal var event: String? = null
+    internal var location: String? = null
+
+    fun date(date: LocalDate) {
+        this.date = date
+    }
+
+    fun event(event: String) {
+        this.event = event
+    }
+
+    fun location(location: String) {
+        this.location = location
     }
 }
 
