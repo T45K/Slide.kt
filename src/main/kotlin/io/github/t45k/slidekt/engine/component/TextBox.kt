@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.unit.Dp
@@ -51,16 +52,7 @@ context(PresentationOption, /* slideHeight: */ Dp, TextAlign)
 @Composable
 private fun ColumnScope.handleParagraphs(paragraphs: List<Paragraph>, indent: Int = 0) {
     paragraphs.forEach { paragraph ->
-        Text(
-            text = paragraph.text,
-            fontSize = (this@Dp / 12 - this@Dp / 96 * indent).sp(),
-            color = textColor(),
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = this@TextAlign,
-            style = TextStyle.Default.copy(
-                textIndent = TextIndent((this@Dp / 12 * indent).sp())
-            )
-        )
+        ParagraphText(paragraph.text, indent)
         Box(Modifier.fillMaxWidth().padding(this@Dp / 96))
 
         handleParagraphs(paragraph.nestedParagraphs, indent + 1)
@@ -70,3 +62,16 @@ private fun ColumnScope.handleParagraphs(paragraphs: List<Paragraph>, indent: In
         }
     }
 }
+
+context(PresentationOption, /* slideHeight: */ Dp, TextAlign)
+@Composable
+fun ParagraphText(text: String, indent: Int) = Text(
+    text = buildAnnotatedString { append(text) },
+    fontSize = (this@Dp / 12 - this@Dp / 96 * indent).sp(),
+    color = textColor(),
+    modifier = Modifier.fillMaxWidth(),
+    textAlign = this@TextAlign,
+    style = TextStyle.Default.copy(
+        textIndent = TextIndent((this@Dp / 12 * indent).sp())
+    )
+)
