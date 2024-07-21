@@ -1,5 +1,6 @@
 package io.github.t45k.slidekt
 
+import io.github.t45k.slidekt.api.Color
 import io.github.t45k.slidekt.api.Horizontal
 import io.github.t45k.slidekt.api.PresentationOption
 import io.github.t45k.slidekt.api.presentation
@@ -55,9 +56,12 @@ class MainKtTest {
             }
 
             slide {
-                textBox{
-                    println("This is ${bold("bold")}. you know say?")
+                title("Decoration")
+                textBox {
                     s("This is ${bold("bold")}. you know say?")
+                    s("This is ${color("color", Color.RED)}. beautiful")
+                    s("${bold(color("Both bold and color", Color.BLUE))} can be applied")
+                    s(color("${bold("Bold")} and not bold", Color.YELLOW))
                 }
             }
         }
