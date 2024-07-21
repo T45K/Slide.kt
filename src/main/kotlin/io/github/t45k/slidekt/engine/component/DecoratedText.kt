@@ -60,7 +60,7 @@ fun parseDecoration(text: String): DecoratedText {
         return SimpleText(text)
     }
 
-    val (decorationTag, index) = decorationTagAndIndex!!
+    val (decorationTag, index) = decorationTagAndIndex
 
     val textStartsWithTag = index == 0
     if (!textStartsWithTag) {
@@ -74,8 +74,7 @@ fun parseDecoration(text: String): DecoratedText {
     }
 
     val restText = text.substring(endTagIndex + decorationTag.pair.text.length)
-    return if (restText.isEmpty()) decoratedText
-    else CompoundText(decoratedText, parseDecoration(restText))
+    return if (restText.isEmpty()) decoratedText else CompoundText(decoratedText, parseDecoration(restText))
 }
 
 internal fun findFirstBeginTagAndIndex(text: String): Pair<DecorationTag, Int>? =
