@@ -104,6 +104,8 @@ class TextBox(
     }
 
     fun s(text: String, nestedParagraphsBlock: (TextBox.() -> Unit) = { }) = sentence(text, nestedParagraphsBlock)
+
+    fun bold(text: String): String = "<bold>$text</bold>"
 }
 
 sealed interface Paragraph {
