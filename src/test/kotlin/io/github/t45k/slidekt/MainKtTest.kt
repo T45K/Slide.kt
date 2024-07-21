@@ -53,6 +53,13 @@ class MainKtTest {
                 title("Me")
                 image(Path("me.png"))
             }
+
+            slide {
+                textBox{
+                    println("This is ${bold("bold")}. you know say?")
+                    s("This is ${bold("bold")}. you know say?")
+                }
+            }
         }
 
         handlePresentation(presentation)
