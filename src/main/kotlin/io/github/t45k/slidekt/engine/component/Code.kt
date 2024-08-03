@@ -3,7 +3,11 @@
 package io.github.t45k.slidekt.engine.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import dev.snipme.highlights.Highlights
+import dev.snipme.highlights.internal.isNewLine
 import dev.snipme.highlights.model.BoldHighlight
 import dev.snipme.highlights.model.ColorHighlight
 import dev.snipme.highlights.model.SyntaxLanguage
@@ -26,14 +31,26 @@ import io.github.t45k.slidekt.util.sp
 
 context(PresentationOption, /* slideHeight: */ Dp)
 @Composable
-fun Code(value: String) = Text(
-    text = lexCode(value),
-    fontFamily = FontFamily.Monospace,
-    fontSize = (this@Dp / 24).sp(),
-    color = Color.White,
-    modifier = Modifier.fillMaxSize().background("1E1F22".toColor()), // same as IntelliJ
-    textAlign = TextAlign.Left,
-)
+fun Code(value: String) = Box {
+    Row(Modifier.fillMaxSize()) {
+        Text(
+            text = (1..value.count { it.isNewLine() } + 1).joinToString("\n"),
+            fontFamily = FontFamily.Monospace,
+            fontSize = (this@Dp / 24).sp(),
+            color = Color.DarkGray,
+            modifier = Modifier.background("1E1F22".toColor()).padding(end = this@Dp / 24), // same as IntelliJ
+            textAlign = TextAlign.Right,
+        )
+        Text(
+            text = lexCode(value),
+            fontFamily = FontFamily.Monospace,
+            fontSize = (this@Dp / 24).sp(),
+            color = Color.White,
+            modifier = Modifier.fillMaxWidth().background("1E1F22".toColor()), // same as IntelliJ
+            textAlign = TextAlign.Left,
+        )
+    }
+}
 
 private val lexer = Highlights.Builder()
     .language(SyntaxLanguage.KOTLIN)
