@@ -66,6 +66,7 @@ class MainKtTest {
             }
 
             slide {
+                title("Syntax Highlighting")
                 code(
                     """
                         class Hoge {
