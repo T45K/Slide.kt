@@ -52,6 +52,7 @@ class Slide {
     internal var title: Title? = null
     internal var textBox: TextBox? = null
     internal var imagePath: Path? = null
+    internal var code: String? = null
 
     fun title(text: String, position: Horizontal = Horizontal.CENTER) {
         title = Title(text, position)
@@ -69,6 +70,10 @@ class Slide {
 
     fun image(path: Path) {
         imagePath = path
+    }
+
+    fun code(value: String) {
+        code = value
     }
 }
 

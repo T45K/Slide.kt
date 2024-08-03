@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.t45k.slidekt.api.Presentation
+import io.github.t45k.slidekt.engine.component.Code
 import io.github.t45k.slidekt.engine.component.Cover
 import io.github.t45k.slidekt.engine.component.Slide
 import io.github.t45k.slidekt.engine.component.TextBox
@@ -76,7 +77,7 @@ fun handlePresentation(presentation: Presentation) = application {
                         Slide(matchHeightConstraintsFirst) {
                             slide.title?.let { title -> Title(title, currentSlideHeight) }
 
-                            if (slide.title != null && (slide.textBox != null || slide.imagePath != null)) {
+                            if (slide.title != null && (slide.textBox != null || slide.imagePath != null || slide.code != null)) {
                                 TitleTextBoxSeparator(currentSlideHeight)
                             }
 
@@ -88,6 +89,12 @@ fun handlePresentation(presentation: Presentation) = application {
                                     contentDescription = null,
                                     modifier = Modifier.fillMaxSize(),
                                 )
+                            }
+
+                            with(currentSlideHeight) {
+                                slide.code?.let {
+                                    Code(it)
+                                }
                             }
                         }
                     }
