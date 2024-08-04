@@ -64,6 +64,17 @@ class MainKtTest {
                     s(color("${bold("Bold")} and not bold", Color.YELLOW))
                 }
             }
+
+            slide {
+                title("Syntax Highlighting")
+                code(
+                    """
+                        class Hoge {
+                          fun hoge() = println("Hello world")
+                        }
+                    """.trimIndent()
+                )
+            }
         }
 
         handlePresentation(presentation)
