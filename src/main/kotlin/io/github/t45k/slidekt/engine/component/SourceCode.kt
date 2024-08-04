@@ -26,38 +26,43 @@ import dev.snipme.highlights.model.BoldHighlight
 import dev.snipme.highlights.model.ColorHighlight
 import dev.snipme.highlights.model.SyntaxLanguage
 import dev.snipme.highlights.model.SyntaxThemes
-import io.github.t45k.slidekt.api.PresentationOption
 import io.github.t45k.slidekt.util.sp
 
-context(PresentationOption, /* slideHeight: */ Dp)
+private const val INTELLIJ_EDITOR_BACKGROUND = "1E1F22"
+
+context(/* slideHeight: */ Dp)
 @Composable
-fun Code(value: String) = Box {
+fun SourceCode(value: String) = Box {
     Row(Modifier.fillMaxSize()) {
+        LineNumbers(linesOfCode = value.count { it.isNewLine() } + 1)
         Text(
-            text = (1..value.count { it.isNewLine() } + 1).joinToString("\n"),
-            fontFamily = FontFamily.Monospace,
-            fontSize = (this@Dp / 24).sp(),
-            color = Color.DarkGray,
-            modifier = Modifier.background("1E1F22".toColor()).padding(end = this@Dp / 24), // same as IntelliJ
-            textAlign = TextAlign.Right,
-        )
-        Text(
-            text = lexCode(value),
+            text = highlightCode(value),
             fontFamily = FontFamily.Monospace,
             fontSize = (this@Dp / 24).sp(),
             color = Color.White,
-            modifier = Modifier.fillMaxWidth().background("1E1F22".toColor()), // same as IntelliJ
+            modifier = Modifier.fillMaxWidth().background(INTELLIJ_EDITOR_BACKGROUND.toColor()),
             textAlign = TextAlign.Left,
         )
     }
 }
 
-private val lexer = Highlights.Builder()
+context(/* slideHeight: */ Dp)
+@Composable
+fun LineNumbers(linesOfCode: Int) = Text(
+    text = (1..linesOfCode).joinToString("\n"),
+    fontFamily = FontFamily.Monospace,
+    fontSize = (this@Dp / 24).sp(),
+    color = Color.DarkGray,
+    modifier = Modifier.background(INTELLIJ_EDITOR_BACKGROUND.toColor()).padding(end = this@Dp / 24),
+    textAlign = TextAlign.Right,
+)
+
+private val highlightBuilder = Highlights.Builder()
     .language(SyntaxLanguage.KOTLIN)
     .theme(SyntaxThemes.default(true))
 
-fun lexCode(code: String): AnnotatedString {
-    val highlights = lexer.code(code).build()
+fun highlightCode(code: String): AnnotatedString {
+    val highlights = highlightBuilder.code(code).build()
         .getHighlights()
         .sortedBy { it.location.start }
 

@@ -1,6 +1,5 @@
 package io.github.t45k.slidekt.engine.component
 
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -18,7 +17,6 @@ import io.github.t45k.slidekt.engine.component.DecorationTag.ColorEndTag
 import io.github.t45k.slidekt.util.indicesOf
 import androidx.compose.ui.graphics.Color as ComposeColor
 
-@Composable
 fun DecoratedText(text: String): AnnotatedString = buildAnnotatedString {
     val decoratedText = parseDecoration(text)
     appendDecoratedTexts(decoratedText)
@@ -118,7 +116,6 @@ internal fun findFirstBeginTagAndIndex(text: String): Pair<DecorationTag, Int>? 
         .filter { (_, index) -> index != -1 }
         .minByOrNull { (_, index) -> index }
 }
-
 
 internal fun findMatchingEndTagIndex(text: String, beginTag: DecorationTag, endTag: DecorationTag): Int {
     require(text.startsWith(beginTag.text))
