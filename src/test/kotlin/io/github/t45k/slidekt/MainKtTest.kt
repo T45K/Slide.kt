@@ -7,7 +7,7 @@ import io.github.t45k.slidekt.api.presentation
 import io.github.t45k.slidekt.engine.handlePresentation
 import kotlin.io.path.Path
 import kotlin.test.Test
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 class MainKtTest {
 
@@ -15,7 +15,7 @@ class MainKtTest {
     fun testPresentation() {
         val presentation = presentation(PresentationOption(darkMode = true)) {
             cover("Slide.ktのご紹介", "Tasuku Nakagawa") {
-                date(LocalDate.of(2024, 1, 1))
+                date(LocalDate(2024, 1, 1))
             }
 
             slide {

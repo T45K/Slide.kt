@@ -1,7 +1,7 @@
 package io.github.t45k.slidekt.api
 
 import kotlin.io.path.Path
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 fun presentation(
     option: PresentationOption = PresentationOption(),
