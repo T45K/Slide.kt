@@ -13,4 +13,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "kmp-trial"
+rootProject.name = "slide_kt"

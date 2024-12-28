@@ -2,7 +2,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     kotlin("jvm") version "2.1.0"
-    id("org.jetbrains.compose") version "1.6.11"
+    id("org.jetbrains.compose") version "1.8.0-alpha01"
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
@@ -21,7 +21,7 @@ dependencies {
     // (in a separate module for demo project and in testMain).
     // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
-    implementation("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha07")
+    implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.0-alpha01")
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
     implementation("dev.snipme:highlights:0.9.0")
