@@ -16,9 +16,7 @@ import io.github.t45k.slidekt.api.Horizontal
 import io.github.t45k.slidekt.api.PresentationOption
 import io.github.t45k.slidekt.util.sp
 import io.github.t45k.slidekt.util.textColor
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.format
-import kotlinx.datetime.format.DayOfWeekNames
+import java.time.format.DateTimeFormatter
 
 context(PresentationOption)
 @Composable
@@ -56,7 +54,7 @@ fun Cover(cover: Cover, slideHeight: Dp) {
 
             cover.date?.let { date ->
                 Text(
-                    text = date.format(LocalDate.Format { "${year()}/${monthNumber()}/${dayOfMonth()}（${dayOfWeek(DayOfWeekNames("月火水木金土日".split("")))}）" }),
+                    text = date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd（E）")),
                     fontSize = (slideHeight / 12).sp(),
                     color = textColor(),
                 )

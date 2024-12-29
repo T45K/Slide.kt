@@ -12,12 +12,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.t45k.slidekt.api.Presentation
-import io.github.t45k.slidekt.engine.component.SourceCode
 import io.github.t45k.slidekt.engine.component.Cover
 import io.github.t45k.slidekt.engine.component.Slide
+import io.github.t45k.slidekt.engine.component.SourceCode
 import io.github.t45k.slidekt.engine.component.TextBox
 import io.github.t45k.slidekt.engine.component.Title
 import io.github.t45k.slidekt.engine.component.TitleTextBoxSeparator
+import org.jetbrains.compose.reload.DevelopmentEntryPoint
 
 fun handlePresentation(presentation: Presentation) = application {
     val navController = rememberNavController()
@@ -43,57 +44,59 @@ fun handlePresentation(presentation: Presentation) = application {
             )
         ),
     ) {
-        val (_, currentSlideHeight) = calcSlideSize(
-            windowState.size,
-            presentation.option.aspectRatio
-        )
-        val matchHeightConstraintsFirst =
-            windowState.size.width / windowState.size.height > presentation.option.aspectRatio.ratio
+        DevelopmentEntryPoint {
+            val (_, currentSlideHeight) = calcSlideSize(
+                windowState.size,
+                presentation.option.aspectRatio
+            )
+            val matchHeightConstraintsFirst =
+                windowState.size.width / windowState.size.height > presentation.option.aspectRatio.ratio
 
-        NavHost(navController, startDestination = if (presentation.cover != null) "0" else "1") {
-            with(presentation.option) {
-                presentation.cover?.let { cover ->
-                    composable(
-                        route = "0",
-                        enterTransition = { slideTransition.enter },
-                        exitTransition = { slideTransition.exist },
-                        popEnterTransition = { slideTransition.popEnter },
-                        popExitTransition = { slideTransition.popExit }
-                    ) {
-                        Slide(matchHeightConstraintsFirst) {
-                            Cover(cover, currentSlideHeight)
+            NavHost(navController, startDestination = if (presentation.cover != null) "0" else "1") {
+                with(presentation.option) {
+                    presentation.cover?.let { cover ->
+                        composable(
+                            route = "0",
+                            enterTransition = { slideTransition.enter },
+                            exitTransition = { slideTransition.exist },
+                            popEnterTransition = { slideTransition.popEnter },
+                            popExitTransition = { slideTransition.popExit }
+                        ) {
+                            Slide(matchHeightConstraintsFirst) {
+                                Cover(cover, currentSlideHeight)
+                            }
                         }
                     }
-                }
 
-                presentation.slides.forEachIndexed { index, slide ->
-                    composable(
-                        route = (index + 1).toString(),
-                        enterTransition = { slideTransition.enter },
-                        exitTransition = { slideTransition.exist },
-                        popEnterTransition = { slideTransition.popEnter },
-                        popExitTransition = { slideTransition.popExit }
-                    ) {
-                        Slide(matchHeightConstraintsFirst) {
-                            slide.title?.let { title -> Title(title, currentSlideHeight) }
+                    presentation.slides.forEachIndexed { index, slide ->
+                        composable(
+                            route = (index + 1).toString(),
+                            enterTransition = { slideTransition.enter },
+                            exitTransition = { slideTransition.exist },
+                            popEnterTransition = { slideTransition.popEnter },
+                            popExitTransition = { slideTransition.popExit }
+                        ) {
+                            Slide(matchHeightConstraintsFirst) {
+                                slide.title?.let { title -> Title(title, currentSlideHeight) }
 
-                            if (slide.title != null && (slide.textBox != null || slide.imagePath != null || slide.code != null)) {
-                                TitleTextBoxSeparator(currentSlideHeight)
-                            }
+                                if (slide.title != null && (slide.textBox != null || slide.imagePath != null || slide.code != null)) {
+                                    TitleTextBoxSeparator(currentSlideHeight)
+                                }
 
-                            slide.textBox?.let { textBox -> TextBox(textBox, currentSlideHeight) }
+                                slide.textBox?.let { textBox -> TextBox(textBox, currentSlideHeight) }
 
-                            slide.imagePath?.let {
-                                Image(
-                                    painterResource(it.toString()),
-                                    contentDescription = null,
-                                    modifier = Modifier.fillMaxSize(),
-                                )
-                            }
+                                slide.imagePath?.let {
+                                    Image(
+                                        painterResource(it.toString()),
+                                        contentDescription = null,
+                                        modifier = Modifier.fillMaxSize(),
+                                    )
+                                }
 
-                            with(currentSlideHeight) {
-                                slide.code?.let {
-                                    SourceCode(it)
+                                with(currentSlideHeight) {
+                                    slide.code?.let {
+                                        SourceCode(it)
+                                    }
                                 }
                             }
                         }
