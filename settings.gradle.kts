@@ -1,6 +1,7 @@
 pluginManagement {
     repositories {
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://packages.jetbrains.team/maven/p/firework/dev")
         google()
         gradlePluginPortal()
         mavenCentral()
@@ -13,4 +14,15 @@ pluginManagement {
     }
 }
 
-rootProject.name = "kmp-trial"
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+}
+
+dependencyResolutionManagement {
+    @Suppress("UnstableApiUsage")
+    repositories {
+        maven("https://packages.jetbrains.team/maven/p/firework/dev")
+    }
+}
+
+rootProject.name = "slide_kt"

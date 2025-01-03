@@ -54,7 +54,7 @@ fun Cover(cover: Cover, slideHeight: Dp) {
 
             cover.date?.let { date ->
                 Text(
-                    text = date.format(DateTimeFormatter.ofPattern("uuuu/MM/dd (E)")),
+                    text = date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd（E）")),
                     fontSize = (slideHeight / 12).sp(),
                     color = textColor(),
                 )

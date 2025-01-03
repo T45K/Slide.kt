@@ -3,12 +3,7 @@ package io.github.t45k.slidekt.api
 import java.nio.file.Path
 import java.time.LocalDate
 
-fun presentation(
-    option: PresentationOption = PresentationOption(),
-    block: Presentation.() -> Unit
-): Presentation = Presentation(option).apply(block)
-
-class Presentation(internal val option: PresentationOption = PresentationOption()) {
+class PresentationDsl(internal val option: PresentationOption = PresentationOption()) {
     internal var cover: Cover? = null
     internal val slides: MutableList<Slide> = mutableListOf()
 
