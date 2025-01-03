@@ -1,4 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.compose.reload.ComposeHotRun
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 
 plugins {
@@ -38,7 +39,12 @@ compose.desktop {
             packageName = "slidekt"
             packageVersion = "1.0.0"
         }
+        mainClass = "io.github.t45k.slidekt.MainKt"
     }
+}
+
+tasks.register<ComposeHotRun>("runHot") {
+    mainClass.set("io.github.t45k.slidekt.MainKt")
 }
 
 kotlin.compilerOptions.freeCompilerArgs.add("-Xcontext-receivers")

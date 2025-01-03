@@ -20,31 +20,119 @@ import io.github.t45k.slidekt.engine.component.Title
 import io.github.t45k.slidekt.engine.component.TitleTextBoxSeparator
 import org.jetbrains.compose.reload.DevelopmentEntryPoint
 
-fun handlePresentation(presentation: Presentation) = application {
-    val navController = rememberNavController()
-    val slideTransition = slideTransition(presentation.option.animation)
-    val windowState = rememberWindowState()
+fun handlePresentation(block: () -> Presentation) = application {
+    DevelopmentEntryPoint {
+        val presentation = block()
+        val navController = rememberNavController()
+        val slideTransition = slideTransition(presentation.option.animation)
+        val windowState = rememberWindowState()
 
-    Window(
-        onCloseRequest = ::exitApplication,
-        state = windowState,
-        title = "Slide.kt",
-        onKeyEvent = mergeKeyEvent(
-            fullScreenEvent(
-                { windowState.placement == WindowPlacement.Fullscreen },
-                { windowState.placement = WindowPlacement.Fullscreen },
-                { windowState.placement = WindowPlacement.Floating },
+        Window(
+            onCloseRequest = ::exitApplication,
+            state = windowState,
+            title = "Slide.kt",
+            onKeyEvent = mergeKeyEvent(
+                fullScreenEvent(
+                    { windowState.placement == WindowPlacement.Fullscreen },
+                    { windowState.placement = WindowPlacement.Fullscreen },
+                    { windowState.placement = WindowPlacement.Floating },
+                ),
+                moveSlideEvent(
+                    { navController.currentDestination!!.route!!.toInt() },
+                    { navController.navigate(it.toString()) },
+                    { navController.popBackStack() },
+                    presentation.slides.size,
+                    hasCover = presentation.cover != null,
+                )
             ),
-            moveSlideEvent(
-                { navController.currentDestination!!.route!!.toInt() },
-                { navController.navigate(it.toString()) },
-                { navController.popBackStack() },
-                presentation.slides.size,
-                hasCover = presentation.cover != null,
+        ) {
+            val (_, currentSlideHeight) = calcSlideSize(
+                windowState.size,
+                presentation.option.aspectRatio
             )
-        ),
-    ) {
-        DevelopmentEntryPoint {
+            val matchHeightConstraintsFirst =
+                windowState.size.width / windowState.size.height > presentation.option.aspectRatio.ratio
+
+            NavHost(navController, startDestination = if (presentation.cover != null) "0" else "1") {
+                with(presentation.option) {
+                    presentation.cover?.let { cover ->
+                        composable(
+                            route = "0",
+                            enterTransition = { slideTransition.enter },
+                            exitTransition = { slideTransition.exist },
+                            popEnterTransition = { slideTransition.popEnter },
+                            popExitTransition = { slideTransition.popExit }
+                        ) {
+                            Slide(matchHeightConstraintsFirst) {
+                                Cover(cover, currentSlideHeight)
+                            }
+                        }
+                    }
+
+                    presentation.slides.forEachIndexed { index, slide ->
+                        composable(
+                            route = (index + 1).toString(),
+                            enterTransition = { slideTransition.enter },
+                            exitTransition = { slideTransition.exist },
+                            popEnterTransition = { slideTransition.popEnter },
+                            popExitTransition = { slideTransition.popExit }
+                        ) {
+                            Slide(matchHeightConstraintsFirst) {
+                                slide.title?.let { title -> Title(title, currentSlideHeight) }
+
+                                if (slide.title != null && (slide.textBox != null || slide.imagePath != null || slide.code != null)) {
+                                    TitleTextBoxSeparator(currentSlideHeight)
+                                }
+
+                                slide.textBox?.let { textBox -> TextBox(textBox, currentSlideHeight) }
+
+                                slide.imagePath?.let {
+                                    Image(
+                                        painterResource(it.toString()),
+                                        contentDescription = null,
+                                        modifier = Modifier.fillMaxSize(),
+                                    )
+                                }
+
+                                with(currentSlideHeight) {
+                                    slide.code?.let {
+                                        SourceCode(it)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun handlePresentation(presentation: Presentation) = application {
+    DevelopmentEntryPoint {
+        val navController = rememberNavController()
+        val slideTransition = slideTransition(presentation.option.animation)
+        val windowState = rememberWindowState()
+
+        Window(
+            onCloseRequest = ::exitApplication,
+            state = windowState,
+            title = "Slide.kt",
+            onKeyEvent = mergeKeyEvent(
+                fullScreenEvent(
+                    { windowState.placement == WindowPlacement.Fullscreen },
+                    { windowState.placement = WindowPlacement.Fullscreen },
+                    { windowState.placement = WindowPlacement.Floating },
+                ),
+                moveSlideEvent(
+                    { navController.currentDestination!!.route!!.toInt() },
+                    { navController.navigate(it.toString()) },
+                    { navController.popBackStack() },
+                    presentation.slides.size,
+                    hasCover = presentation.cover != null,
+                )
+            ),
+        ) {
             val (_, currentSlideHeight) = calcSlideSize(
                 windowState.size,
                 presentation.option.aspectRatio
