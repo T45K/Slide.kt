@@ -11,7 +11,8 @@ import androidx.compose.ui.window.rememberWindowState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.github.t45k.slidekt.api.Presentation
+import io.github.t45k.slidekt.api.PresentationDsl
+import io.github.t45k.slidekt.api.PresentationOption
 import io.github.t45k.slidekt.engine.component.Cover
 import io.github.t45k.slidekt.engine.component.Slide
 import io.github.t45k.slidekt.engine.component.SourceCode
@@ -20,9 +21,12 @@ import io.github.t45k.slidekt.engine.component.Title
 import io.github.t45k.slidekt.engine.component.TitleTextBoxSeparator
 import org.jetbrains.compose.reload.DevelopmentEntryPoint
 
-fun handlePresentation(block: () -> Presentation) = application {
+fun presentation(
+    option: () -> PresentationOption = { PresentationOption() },
+    dsl: PresentationDsl.() -> Unit,
+) = application {
     DevelopmentEntryPoint {
-        val presentation = block()
+        val presentation = PresentationDsl(option()).apply(dsl)
         val navController = rememberNavController()
         val slideTransition = slideTransition(presentation.option.animation)
         val windowState = rememberWindowState()
@@ -108,7 +112,7 @@ fun handlePresentation(block: () -> Presentation) = application {
     }
 }
 
-fun handlePresentation(presentation: Presentation) = application {
+fun handlePresentation(presentation: PresentationDsl) = application {
     DevelopmentEntryPoint {
         val navController = rememberNavController()
         val slideTransition = slideTransition(presentation.option.animation)
