@@ -1,5 +1,3 @@
-package io.github.t45k.slidekt
-
 import io.github.t45k.slidekt.api.Color
 import io.github.t45k.slidekt.api.Horizontal
 import io.github.t45k.slidekt.api.PresentationOption
