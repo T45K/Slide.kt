@@ -66,8 +66,7 @@ sealed interface DecorationTag {
     }
 }
 
-context(AnnotatedString.Builder)
-fun appendDecoratedTexts(text: DecoratedText) {
+fun AnnotatedString.Builder.appendDecoratedTexts(text: DecoratedText) {
     when (text) {
         is SimpleText -> append(text.text)
         is BoldText -> withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { appendDecoratedTexts(text.text) }

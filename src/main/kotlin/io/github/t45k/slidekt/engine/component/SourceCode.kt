@@ -30,7 +30,7 @@ import io.github.t45k.slidekt.util.sp
 
 private const val INTELLIJ_EDITOR_BACKGROUND = "1E1F22"
 
-context(/* slideHeight: */ Dp)
+context(slideHeight: Dp)
 @Composable
 fun SourceCode(value: String) = Box {
     Row(Modifier.fillMaxSize()) {
@@ -38,7 +38,7 @@ fun SourceCode(value: String) = Box {
         Text(
             text = highlightCode(value),
             fontFamily = FontFamily.Monospace,
-            fontSize = (this@Dp / 24).sp(),
+            fontSize = (slideHeight / 24).sp(),
             color = Color.White,
             modifier = Modifier.fillMaxWidth().background(INTELLIJ_EDITOR_BACKGROUND.toColor()),
             textAlign = TextAlign.Left,
@@ -46,14 +46,14 @@ fun SourceCode(value: String) = Box {
     }
 }
 
-context(/* slideHeight: */ Dp)
+context(slideHeight: Dp)
 @Composable
 fun LineNumbers(linesOfCode: Int) = Text(
     text = (1..linesOfCode).joinToString("\n"),
     fontFamily = FontFamily.Monospace,
-    fontSize = (this@Dp / 24).sp(),
+    fontSize = (slideHeight / 24).sp(),
     color = Color.DarkGray,
-    modifier = Modifier.background(INTELLIJ_EDITOR_BACKGROUND.toColor()).padding(end = this@Dp / 24),
+    modifier = Modifier.background(INTELLIJ_EDITOR_BACKGROUND.toColor()).padding(end = slideHeight / 24),
     textAlign = TextAlign.Right,
 )
 

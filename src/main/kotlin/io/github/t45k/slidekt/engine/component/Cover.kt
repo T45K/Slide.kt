@@ -18,7 +18,7 @@ import io.github.t45k.slidekt.util.sp
 import io.github.t45k.slidekt.util.textColor
 import java.time.format.DateTimeFormatter
 
-context(PresentationOption)
+context(option: PresentationOption)
 @Composable
 fun Cover(cover: Cover, slideHeight: Dp) {
     Box(

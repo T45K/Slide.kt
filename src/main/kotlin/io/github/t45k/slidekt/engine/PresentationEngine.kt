@@ -1,16 +1,20 @@
 package io.github.t45k.slidekt.engine
 
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.ui.NavDisplay
 import io.github.t45k.slidekt.api.PresentationDsl
 import io.github.t45k.slidekt.api.PresentationOption
 import io.github.t45k.slidekt.engine.component.Cover
@@ -19,176 +23,83 @@ import io.github.t45k.slidekt.engine.component.SourceCode
 import io.github.t45k.slidekt.engine.component.TextBox
 import io.github.t45k.slidekt.engine.component.Title
 import io.github.t45k.slidekt.engine.component.TitleTextBoxSeparator
-import org.jetbrains.compose.reload.DevelopmentEntryPoint
 
 fun presentation(
     option: () -> PresentationOption = { PresentationOption() },
     dsl: PresentationDsl.() -> Unit,
 ) = application {
-    DevelopmentEntryPoint {
-        val presentation = PresentationDsl(option()).apply(dsl)
-        val navController = rememberNavController()
-        val slideTransition = slideTransition(presentation.option.animation)
-        val windowState = rememberWindowState()
-
-        Window(
-            onCloseRequest = ::exitApplication,
-            state = windowState,
-            title = "Slide.kt",
-            onKeyEvent = mergeKeyEvent(
-                fullScreenEvent(
-                    { windowState.placement == WindowPlacement.Fullscreen },
-                    { windowState.placement = WindowPlacement.Fullscreen },
-                    { windowState.placement = WindowPlacement.Floating },
-                ),
-                moveSlideEvent(
-                    { navController.currentDestination!!.route!!.toInt() },
-                    { navController.navigate(it.toString()) },
-                    { navController.popBackStack() },
-                    presentation.slides.size,
-                    hasCover = presentation.cover != null,
-                )
-            ),
-        ) {
-            val (_, currentSlideHeight) = calcSlideSize(
-                windowState.size,
-                presentation.option.aspectRatio
-            )
-            val matchHeightConstraintsFirst =
-                windowState.size.width / windowState.size.height > presentation.option.aspectRatio.ratio
-
-            NavHost(navController, startDestination = if (presentation.cover != null) "0" else "1") {
-                with(presentation.option) {
-                    presentation.cover?.let { cover ->
-                        composable(
-                            route = "0",
-                            enterTransition = { slideTransition.enter },
-                            exitTransition = { slideTransition.exist },
-                            popEnterTransition = { slideTransition.popEnter },
-                            popExitTransition = { slideTransition.popExit }
-                        ) {
-                            Slide(matchHeightConstraintsFirst) {
-                                Cover(cover, currentSlideHeight)
-                            }
-                        }
-                    }
-
-                    presentation.slides.forEachIndexed { index, slide ->
-                        composable(
-                            route = (index + 1).toString(),
-                            enterTransition = { slideTransition.enter },
-                            exitTransition = { slideTransition.exist },
-                            popEnterTransition = { slideTransition.popEnter },
-                            popExitTransition = { slideTransition.popExit }
-                        ) {
-                            Slide(matchHeightConstraintsFirst) {
-                                slide.title?.let { title -> Title(title, currentSlideHeight) }
-
-                                if (slide.title != null && (slide.textBox != null || slide.imagePath != null || slide.code != null)) {
-                                    TitleTextBoxSeparator(currentSlideHeight)
-                                }
-
-                                slide.textBox?.let { textBox -> TextBox(textBox, currentSlideHeight) }
-
-                                slide.imagePath?.let {
-                                    Image(
-                                        painterResource(it.toString()),
-                                        contentDescription = null,
-                                        modifier = Modifier.fillMaxSize(),
-                                    )
-                                }
-
-                                with(currentSlideHeight) {
-                                    slide.code?.let {
-                                        SourceCode(it)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    PresentationApp(PresentationDsl(option()).apply(dsl))
 }
 
 fun handlePresentation(presentation: PresentationDsl) = application {
-    DevelopmentEntryPoint {
-        val navController = rememberNavController()
-        val slideTransition = slideTransition(presentation.option.animation)
-        val windowState = rememberWindowState()
+    PresentationApp(presentation)
+}
 
-        Window(
-            onCloseRequest = ::exitApplication,
-            state = windowState,
-            title = "Slide.kt",
-            onKeyEvent = mergeKeyEvent(
-                fullScreenEvent(
-                    { windowState.placement == WindowPlacement.Fullscreen },
-                    { windowState.placement = WindowPlacement.Fullscreen },
-                    { windowState.placement = WindowPlacement.Floating },
-                ),
-                moveSlideEvent(
-                    { navController.currentDestination!!.route!!.toInt() },
-                    { navController.navigate(it.toString()) },
-                    { navController.popBackStack() },
-                    presentation.slides.size,
-                    hasCover = presentation.cover != null,
-                )
+@Composable
+private fun ApplicationScope.PresentationApp(presentation: PresentationDsl) {
+    val slideTransition = slideTransition(presentation.option.animation)
+    val windowState = rememberWindowState()
+    val backStack = remember { mutableStateListOf(if (presentation.cover != null) 0 else 1) }
+
+    Window(
+        onCloseRequest = ::exitApplication,
+        state = windowState,
+        title = "Slide.kt",
+        onKeyEvent = mergeKeyEvent(
+            fullScreenEvent(
+                { windowState.placement == WindowPlacement.Fullscreen },
+                { windowState.placement = WindowPlacement.Fullscreen },
+                { windowState.placement = WindowPlacement.Floating },
             ),
-        ) {
-            val (_, currentSlideHeight) = calcSlideSize(
-                windowState.size,
-                presentation.option.aspectRatio
+            moveSlideEvent(
+                { backStack.last() },
+                { backStack.add(it) },
+                { backStack.removeLastOrNull() },
+                presentation.slides.size,
+                hasCover = presentation.cover != null,
             )
-            val matchHeightConstraintsFirst =
-                windowState.size.width / windowState.size.height > presentation.option.aspectRatio.ratio
+        ),
+    ) {
+        val (_, currentSlideHeight) = calcSlideSize(
+            windowState.size,
+            presentation.option.aspectRatio
+        )
+        val matchHeightConstraintsFirst =
+            windowState.size.width / windowState.size.height > presentation.option.aspectRatio.ratio
 
-            NavHost(navController, startDestination = if (presentation.cover != null) "0" else "1") {
+        NavDisplay(
+            backStack = backStack,
+            onBack = { backStack.removeLastOrNull() },
+            transitionSpec = { slideTransition.enter togetherWith slideTransition.exist },
+            popTransitionSpec = { slideTransition.popEnter togetherWith slideTransition.popExit },
+        ) { index ->
+            NavEntry(index) {
                 with(presentation.option) {
-                    presentation.cover?.let { cover ->
-                        composable(
-                            route = "0",
-                            enterTransition = { slideTransition.enter },
-                            exitTransition = { slideTransition.exist },
-                            popEnterTransition = { slideTransition.popEnter },
-                            popExitTransition = { slideTransition.popExit }
-                        ) {
-                            Slide(matchHeightConstraintsFirst) {
-                                Cover(cover, currentSlideHeight)
+                    Slide(matchHeightConstraintsFirst) {
+                        if (index == 0) {
+                            presentation.cover?.let { cover -> Cover(cover, currentSlideHeight) }
+                        } else {
+                            val slide = presentation.slides[index - 1]
+
+                            slide.title?.let { title -> Title(title, currentSlideHeight) }
+
+                            if (slide.title != null && (slide.textBox != null || slide.imagePath != null || slide.code != null)) {
+                                TitleTextBoxSeparator(currentSlideHeight)
                             }
-                        }
-                    }
 
-                    presentation.slides.forEachIndexed { index, slide ->
-                        composable(
-                            route = (index + 1).toString(),
-                            enterTransition = { slideTransition.enter },
-                            exitTransition = { slideTransition.exist },
-                            popEnterTransition = { slideTransition.popEnter },
-                            popExitTransition = { slideTransition.popExit }
-                        ) {
-                            Slide(matchHeightConstraintsFirst) {
-                                slide.title?.let { title -> Title(title, currentSlideHeight) }
+                            slide.textBox?.let { textBox -> TextBox(textBox, currentSlideHeight) }
 
-                                if (slide.title != null && (slide.textBox != null || slide.imagePath != null || slide.code != null)) {
-                                    TitleTextBoxSeparator(currentSlideHeight)
-                                }
+                            slide.imagePath?.let {
+                                Image(
+                                    painterResource(it.toString()),
+                                    contentDescription = null,
+                                    modifier = Modifier.fillMaxSize(),
+                                )
+                            }
 
-                                slide.textBox?.let { textBox -> TextBox(textBox, currentSlideHeight) }
-
-                                slide.imagePath?.let {
-                                    Image(
-                                        painterResource(it.toString()),
-                                        contentDescription = null,
-                                        modifier = Modifier.fillMaxSize(),
-                                    )
-                                }
-
-                                with(currentSlideHeight) {
-                                    slide.code?.let {
-                                        SourceCode(it)
-                                    }
+                            with(currentSlideHeight) {
+                                slide.code?.let {
+                                    SourceCode(it)
                                 }
                             }
                         }
