@@ -15,27 +15,27 @@ import androidx.compose.ui.graphics.Color
 import io.github.t45k.slidekt.api.PresentationOption
 import io.github.t45k.slidekt.util.bgColor
 
-context(option: PresentationOption)
 @Composable
+context(option: PresentationOption)
 fun Slide(
     matchHeightConstraintsFirst: Boolean,
     content: @Composable () -> Unit,
 ) = SlideBackground {
-    SlideMergin(matchHeightConstraintsFirst) {
+    SlideMargin(matchHeightConstraintsFirst) {
         SlideContent { content() }
     }
 }
 
-context(option: PresentationOption)
 @Composable
+context(_: PresentationOption)
 private fun SlideBackground(slideContent: @Composable BoxScope.() -> Unit) =
     Box(Modifier.fillMaxSize().background(Color.Gray), content = slideContent)
 
-context(option: PresentationOption)
 @Composable
-private fun SlideMergin(
+context(option: PresentationOption)
+private fun SlideMargin(
     matchHeightConstraintsFirst: Boolean,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) = Column(
     Modifier.fillMaxSize()
         .aspectRatio(
@@ -48,10 +48,10 @@ private fun SlideMergin(
     content = content,
 )
 
-context(option: PresentationOption)
 @Composable
+context(_: PresentationOption)
 private fun SlideContent(
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) = Column(
     Modifier.fillMaxSize(90 / 100F),
     content = content,

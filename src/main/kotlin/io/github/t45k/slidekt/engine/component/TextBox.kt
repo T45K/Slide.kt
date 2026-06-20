@@ -23,8 +23,8 @@ import io.github.t45k.slidekt.api.Vertical
 import io.github.t45k.slidekt.util.sp
 import io.github.t45k.slidekt.util.textColor
 
-context(option: PresentationOption)
 @Composable
+context(option: PresentationOption)
 fun TextBox(textBox: TextBox, slideHeight: Dp) = Column(
     modifier = Modifier.fillMaxSize(),
     verticalArrangement = when (textBox.verticalPosition) {
@@ -47,8 +47,8 @@ fun TextBox(textBox: TextBox, slideHeight: Dp) = Column(
     }
 }
 
-context(option: PresentationOption, slideHeight: Dp, textAlign: TextAlign)
 @Composable
+context(option: PresentationOption, slideHeight: Dp, textAlign: TextAlign)
 private fun ColumnScope.handleParagraphs(paragraphs: List<Paragraph>, indent: Int = 0) {
     paragraphs.forEach { paragraph ->
         ParagraphText(paragraph.text, indent)
@@ -62,8 +62,8 @@ private fun ColumnScope.handleParagraphs(paragraphs: List<Paragraph>, indent: In
     }
 }
 
-context(option: PresentationOption, slideHeight: Dp, textAlign: TextAlign)
 @Composable
+context(option: PresentationOption, slideHeight: Dp, textAlign: TextAlign)
 fun ParagraphText(text: String, indent: Int) = Text(
     text = DecoratedText(text),
     fontSize = (slideHeight / 12 - slideHeight / 96 * indent).sp(),
@@ -71,6 +71,6 @@ fun ParagraphText(text: String, indent: Int) = Text(
     modifier = Modifier.fillMaxWidth(),
     textAlign = textAlign,
     style = TextStyle.Default.copy(
-        textIndent = TextIndent((slideHeight / 12 * indent).sp())
-    )
+        textIndent = TextIndent((slideHeight / 12 * indent).sp()),
+    ),
 )

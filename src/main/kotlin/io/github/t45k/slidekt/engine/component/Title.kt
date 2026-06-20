@@ -14,14 +14,14 @@ import io.github.t45k.slidekt.api.Title
 import io.github.t45k.slidekt.util.sp
 import io.github.t45k.slidekt.util.textColor
 
-context(option: PresentationOption)
 @Composable
+context(option: PresentationOption)
 fun Title(title: Title, slideHeight: Dp) = Box(
     Modifier.fillMaxWidth(),
     contentAlignment = when (title.position) {
         Horizontal.LEFT -> Alignment.CenterStart
         Horizontal.CENTER -> Alignment.Center
-    }
+    },
 ) {
     Text(
         text = title.text,
