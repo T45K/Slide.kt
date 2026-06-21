@@ -1,12 +1,10 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.compose.reload.ComposeHotRun
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 
 plugins {
-    kotlin("jvm") version "2.1.0-firework.31"
-    kotlin("plugin.compose") version "2.1.0-firework.31"
+    kotlin("jvm")
+    kotlin("plugin.compose")
     id("org.jetbrains.compose")
-    id("org.jetbrains.compose-hot-reload") version "1.0.0-dev.31.8"
+    id("org.jetbrains.compose.hot-reload") version "1.2.0-alpha02"
 }
 
 group = "io.github.t45k"
@@ -27,16 +25,14 @@ kotlin {
 repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    maven("https://packages.jetbrains.team/maven/p/firework/dev")
     google()
 }
 
 dependencies {
     implementation(compose.desktop.currentOs)
-    implementation("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha07")
+    implementation("org.jetbrains.androidx.navigation3:navigation3-ui:1.1.1")
 
-    implementation("dev.snipme:highlights:0.9.0")
-
+    implementation("dev.snipme:highlights:1.1.0")
     testImplementation(kotlin("test"))
 }
 
@@ -49,14 +45,4 @@ compose.desktop {
         }
         mainClass = "MainKt"
     }
-}
-
-tasks.register<ComposeHotRun>("runHot") {
-    mainClass.set("MainKt")
-}
-
-kotlin.compilerOptions.freeCompilerArgs.add("-Xcontext-receivers")
-
-composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 }

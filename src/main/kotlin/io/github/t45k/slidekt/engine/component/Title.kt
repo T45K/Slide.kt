@@ -14,7 +14,7 @@ import io.github.t45k.slidekt.api.Title
 import io.github.t45k.slidekt.util.sp
 import io.github.t45k.slidekt.util.textColor
 
-context(PresentationOption)
+context(option: PresentationOption)
 @Composable
 fun Title(title: Title, slideHeight: Dp) = Box(
     Modifier.fillMaxWidth(),
