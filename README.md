@@ -12,6 +12,35 @@ It will be automatically downloaded when running this app.
 1. [Fork this repo](https://github.com/T45K/Slide.kt/fork)
 2. Rewrite [`main.kt`](./src/main/sample/main.kt) as you like
 
+## PDF export
+
+You can export your presentation to a PDF file (one slide per page).
+
+- While the presentation window is open, press `Cmd`/`Ctrl` + `P`. A `slide.pdf` file is written to the
+  current working directory.
+- To generate a PDF without opening a window (e.g., in a headless environment), use `presentationPdf`:
+
+```kotlin
+import io.github.t45k.slidekt.engine.presentationPdf
+import kotlin.io.path.Path
+
+fun main() = presentationPdf(Path("slide.pdf")) {
+    cover("Slide.kt", "Tasuku Nakagawa")
+    slide {
+        title("Hello World")
+        textBox { s("Let's start") }
+    }
+}
+```
+
+- If you already built a presentation, call `exportToPdf` on it directly:
+
+```kotlin
+import io.github.t45k.slidekt.engine.exportToPdf
+
+presentation.exportToPdf(Path("slide.pdf"))
+```
+
 ## DSL
 
 A presentation is composed of 0 or 1 `cover` and 0 or more `slide`.
