@@ -19,6 +19,7 @@ import androidx.navigation3.ui.NavDisplay
 import io.github.t45k.slidekt.api.PresentationOption
 import io.github.t45k.slidekt.api.PresentationSpec
 import io.github.t45k.slidekt.engine.component.Cover
+import io.github.t45k.slidekt.engine.component.PresenterView
 import io.github.t45k.slidekt.engine.component.Slide
 import io.github.t45k.slidekt.engine.component.SourceCode
 import io.github.t45k.slidekt.engine.component.TextBox
@@ -42,6 +43,16 @@ private fun ApplicationScope.PresentationApp(presentation: PresentationSpec) {
     val windowState = rememberWindowState()
     val backStack = remember { mutableStateListOf(if (presentation.cover != null) 0 else 1) }
 
+    // Shared between every window so that advancing the slide from any of them stays in sync:
+    // they all mutate the same [backStack] and recompose together.
+    val moveEvent = moveSlideEvent(
+        { backStack.last() },
+        { backStack.add(it) },
+        { backStack.removeLastOrNull() },
+        presentation.slides.size,
+        hasCover = presentation.cover != null,
+    )
+
     Window(
         onCloseRequest = ::exitApplication,
         state = windowState,
@@ -52,13 +63,7 @@ private fun ApplicationScope.PresentationApp(presentation: PresentationSpec) {
                 { windowState.placement = WindowPlacement.Fullscreen },
                 { windowState.placement = WindowPlacement.Floating },
             ),
-            moveSlideEvent(
-                { backStack.last() },
-                { backStack.add(it) },
-                { backStack.removeLastOrNull() },
-                presentation.slides.size,
-                hasCover = presentation.cover != null,
-            ),
+            moveEvent,
             exportPdfEvent { presentation.exportToPdf() },
         ),
     ) {
@@ -78,6 +83,25 @@ private fun ApplicationScope.PresentationApp(presentation: PresentationSpec) {
             NavEntry(index) {
                 SlideContent(presentation, index, currentSlideHeight, matchHeightConstraintsFirst)
             }
+        }
+    }
+
+    if (presentation.hasCaption) {
+        val captionWindowState = rememberWindowState()
+        Window(
+            onCloseRequest = ::exitApplication,
+            state = captionWindowState,
+            title = "Slide.kt - Presenter",
+            onKeyEvent = mergeKeyEvent(
+                fullScreenEvent(
+                    { captionWindowState.placement == WindowPlacement.Fullscreen },
+                    { captionWindowState.placement = WindowPlacement.Fullscreen },
+                    { captionWindowState.placement = WindowPlacement.Floating },
+                ),
+                moveEvent,
+            ),
+        ) {
+            PresenterView(presentation, backStack.last())
         }
     }
 }

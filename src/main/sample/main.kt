@@ -19,6 +19,7 @@ fun main() = presentation({ PresentationOption(darkMode = true) }) {
                 }
             }
         }
+        caption("まずはこのスライドから始めます。ネスト構造で文を入れ子にできることを紹介しましょう。")
     }
 
     slide {
@@ -32,6 +33,7 @@ fun main() = presentation({ PresentationOption(darkMode = true) }) {
                 sentence("また今度")
             }
         }
+        caption("挨拶のバリエーションを左寄せで表示しています。ここでキャプションが手元に出ることを確認できます。")
     }
 
     slide {
