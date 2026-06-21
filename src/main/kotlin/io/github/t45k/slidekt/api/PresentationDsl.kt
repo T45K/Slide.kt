@@ -11,9 +11,13 @@ class PresentationDsl(internal val option: PresentationOption = PresentationOpti
         title: String,
         name: String,
         horizontalPosition: Horizontal = Horizontal.CENTER,
-        block: Cover.() -> Unit = {}
+        block: Cover.() -> Unit = {},
     ) {
         cover = Cover(title, name, horizontalPosition).apply(block)
+    }
+
+    fun slides(block: Slides.() -> Unit) {
+        Slides().apply(block).slides.forEach { slides.add(it) }
     }
 
     fun slide(block: Slide.() -> Unit) {
@@ -40,6 +44,18 @@ class Cover(
 
     fun location(location: String) {
         this.location = location
+    }
+}
+
+class Slides {
+    internal val slides: MutableList<Slide> = mutableListOf()
+
+    fun slides(block: Slides.() -> Unit) {
+        Slides().apply(block).slides.forEach { slides.add(it) }
+    }
+
+    fun slide(block: Slide.() -> Unit) {
+        slides.add(Slide().apply(block))
     }
 }
 
@@ -115,7 +131,7 @@ sealed interface Paragraph {
 
     data class Item(
         override val text: String,
-        override val nestedParagraphs: List<Paragraph> = emptyList()
+        override val nestedParagraphs: List<Paragraph> = emptyList(),
     ) : Paragraph
 
     data class Numbering(
@@ -125,6 +141,6 @@ sealed interface Paragraph {
 
     data class Sentence(
         override val text: String,
-        override val nestedParagraphs: List<Paragraph> = emptyList()
+        override val nestedParagraphs: List<Paragraph> = emptyList(),
     ) : Paragraph
 }
