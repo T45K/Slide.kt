@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
-import io.github.t45k.slidekt.api.Cover
+import io.github.t45k.slidekt.api.CoverSpec
 import io.github.t45k.slidekt.api.Horizontal
 import io.github.t45k.slidekt.api.PresentationOption
 import io.github.t45k.slidekt.util.sp
@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 context(option: PresentationOption)
-fun Cover(cover: Cover, slideHeight: Dp) {
+fun Cover(cover: CoverSpec, slideHeight: Dp) {
     Box(
         Modifier.fillMaxWidth().fillMaxHeight(2 / 3f),
         contentAlignment = when (cover.position) {

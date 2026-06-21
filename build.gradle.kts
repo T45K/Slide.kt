@@ -33,6 +33,7 @@ dependencies {
     implementation("org.jetbrains.androidx.navigation3:navigation3-ui:1.1.1")
 
     implementation("dev.snipme:highlights:1.1.0")
+    implementation("org.apache.pdfbox:pdfbox:2.0.32")
     testImplementation(kotlin("test"))
 }
 
