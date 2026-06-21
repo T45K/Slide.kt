@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
@@ -57,7 +58,8 @@ private fun ApplicationScope.PresentationApp(presentation: PresentationDsl) {
                 { backStack.removeLastOrNull() },
                 presentation.slides.size,
                 hasCover = presentation.cover != null,
-            )
+            ),
+            exportPdfEvent { presentation.exportToPdf() },
         ),
     ) {
         val (_, currentSlideHeight) = calcSlideSize(
@@ -74,35 +76,52 @@ private fun ApplicationScope.PresentationApp(presentation: PresentationDsl) {
             popTransitionSpec = { slideTransition.popEnter togetherWith slideTransition.popExit },
         ) { index ->
             NavEntry(index) {
-                with(presentation.option) {
-                    Slide(matchHeightConstraintsFirst) {
-                        if (index == 0) {
-                            presentation.cover?.let { cover -> Cover(cover, currentSlideHeight) }
-                        } else {
-                            val slide = presentation.slides[index - 1]
+                SlideContent(presentation, index, currentSlideHeight, matchHeightConstraintsFirst)
+            }
+        }
+    }
+}
 
-                            slide.title?.let { title -> Title(title, currentSlideHeight) }
+/**
+ * Renders a single page (the cover when [index] is `0`, otherwise the slide at `index - 1`) of the
+ * given [presentation].
+ *
+ * This composable is shared between the on-screen presentation and the PDF export so that both
+ * produce exactly the same layout.
+ */
+@Composable
+internal fun SlideContent(
+    presentation: PresentationDsl,
+    index: Int,
+    slideHeight: Dp,
+    matchHeightConstraintsFirst: Boolean,
+) {
+    with(presentation.option) {
+        Slide(matchHeightConstraintsFirst) {
+            if (index == 0) {
+                presentation.cover?.let { cover -> Cover(cover, slideHeight) }
+            } else {
+                val slide = presentation.slides[index - 1]
 
-                            if (slide.title != null && (slide.textBox != null || slide.imagePath != null || slide.code != null)) {
-                                TitleTextBoxSeparator(currentSlideHeight)
-                            }
+                slide.title?.let { title -> Title(title, slideHeight) }
 
-                            slide.textBox?.let { textBox -> TextBox(textBox, currentSlideHeight) }
+                if (slide.title != null && (slide.textBox != null || slide.imagePath != null || slide.code != null)) {
+                    TitleTextBoxSeparator(slideHeight)
+                }
 
-                            slide.imagePath?.let {
-                                Image(
-                                    painterResource(it.toString()),
-                                    contentDescription = null,
-                                    modifier = Modifier.fillMaxSize(),
-                                )
-                            }
+                slide.textBox?.let { textBox -> TextBox(textBox, slideHeight) }
 
-                            with(currentSlideHeight) {
-                                slide.code?.let {
-                                    SourceCode(it)
-                                }
-                            }
-                        }
+                slide.imagePath?.let {
+                    Image(
+                        painterResource(it.toString()),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+
+                with(slideHeight) {
+                    slide.code?.let {
+                        SourceCode(it)
                     }
                 }
             }

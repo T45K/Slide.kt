@@ -18,8 +18,8 @@ import io.github.t45k.slidekt.util.sp
 import io.github.t45k.slidekt.util.textColor
 import java.time.format.DateTimeFormatter
 
-context(option: PresentationOption)
 @Composable
+context(option: PresentationOption)
 fun Cover(cover: Cover, slideHeight: Dp) {
     Box(
         Modifier.fillMaxWidth().fillMaxHeight(2 / 3f),

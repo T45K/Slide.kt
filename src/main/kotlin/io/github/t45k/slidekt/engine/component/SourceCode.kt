@@ -30,8 +30,8 @@ import io.github.t45k.slidekt.util.sp
 
 private const val INTELLIJ_EDITOR_BACKGROUND = "1E1F22"
 
-context(slideHeight: Dp)
 @Composable
+context(slideHeight: Dp)
 fun SourceCode(value: String) = Box {
     Row(Modifier.fillMaxSize()) {
         LineNumbers(linesOfCode = value.count { it.isNewLine() } + 1)
@@ -46,8 +46,8 @@ fun SourceCode(value: String) = Box {
     }
 }
 
-context(slideHeight: Dp)
 @Composable
+context(slideHeight: Dp)
 fun LineNumbers(linesOfCode: Int) = Text(
     text = (1..linesOfCode).joinToString("\n"),
     fontFamily = FontFamily.Monospace,

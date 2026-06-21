@@ -49,6 +49,17 @@ internal fun fullScreenEvent(
     }
 }
 
+internal fun exportPdfEvent(
+    export: () -> Unit,
+): OnKeyEvent = onKeyDown {
+    if ((it.isCtrlPressed || it.isMetaPressed) && it.key == Key.P) {
+        export()
+        true
+    } else {
+        false
+    }
+}
+
 internal fun moveSlideEvent(
     currentIndex: () -> Int,
     navigate: (Int) -> Unit,
