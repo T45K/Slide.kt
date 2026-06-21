@@ -13,9 +13,9 @@ fun main() = presentation({ PresentationOption(darkMode = true) }) {
     slide {
         title("Hello World")
         textBox {
-            s("Let's start") {
-                s("This is nest") {
-                    s("nest one more")
+            sentence("Let's start") {
+                sentence("This is nest") {
+                    sentence("nest one more")
                 }
             }
         }
@@ -24,12 +24,12 @@ fun main() = presentation({ PresentationOption(darkMode = true) }) {
     slide {
         title("Second")
         textBox(horizontalPosition = Horizontal.LEFT) {
-            s("こんにちは") {
-                s("こんばんは")
-                s("おはよう")
+            sentence("こんにちは") {
+                sentence("こんばんは")
+                sentence("おはよう")
             }
-            s("さようなら") {
-                s("また今度")
+            sentence("さようなら") {
+                sentence("また今度")
             }
         }
     }
@@ -37,8 +37,8 @@ fun main() = presentation({ PresentationOption(darkMode = true) }) {
     slide {
         title("Third")
         textBox {
-            s("1234")
-            s("5678")
+            sentence("1234")
+            sentence("5678")
         }
     }
 
@@ -50,10 +50,10 @@ fun main() = presentation({ PresentationOption(darkMode = true) }) {
     slide {
         title("Decoration")
         textBox {
-            s("This is ${bold("bold")}. you know say?")
-            s("This is ${color("color", Color.RED)}. beautiful")
-            s("${bold(color("Both bold and color", Color.BLUE))} can be applied")
-            s(color("${bold("Bold")} and not bold", Color.YELLOW))
+            sentence("This is ${bold("bold")}. you know say?")
+            sentence("This is ${color("color", Color.RED)}. beautiful")
+            sentence("${bold(color("Both bold and color", Color.BLUE))} can be applied")
+            sentence(color("${bold("Bold")} and not bold", Color.YELLOW))
         }
     }
 

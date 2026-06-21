@@ -10,13 +10,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import io.github.t45k.slidekt.api.Horizontal
 import io.github.t45k.slidekt.api.PresentationOption
-import io.github.t45k.slidekt.api.Title
+import io.github.t45k.slidekt.api.TitleSpec
 import io.github.t45k.slidekt.util.sp
 import io.github.t45k.slidekt.util.textColor
 
 @Composable
 context(option: PresentationOption)
-fun Title(title: Title, slideHeight: Dp) = Box(
+fun Title(title: TitleSpec, slideHeight: Dp) = Box(
     Modifier.fillMaxWidth(),
     contentAlignment = when (title.position) {
         Horizontal.LEFT -> Alignment.CenterStart

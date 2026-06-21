@@ -18,14 +18,14 @@ import androidx.compose.ui.unit.Dp
 import io.github.t45k.slidekt.api.Horizontal
 import io.github.t45k.slidekt.api.Paragraph
 import io.github.t45k.slidekt.api.PresentationOption
-import io.github.t45k.slidekt.api.TextBox
+import io.github.t45k.slidekt.api.TextBoxSpec
 import io.github.t45k.slidekt.api.Vertical
 import io.github.t45k.slidekt.util.sp
 import io.github.t45k.slidekt.util.textColor
 
 @Composable
 context(option: PresentationOption)
-fun TextBox(textBox: TextBox, slideHeight: Dp) = Column(
+fun TextBox(textBox: TextBoxSpec, slideHeight: Dp) = Column(
     modifier = Modifier.fillMaxSize(),
     verticalArrangement = when (textBox.verticalPosition) {
         Vertical.TOP -> Arrangement.Top

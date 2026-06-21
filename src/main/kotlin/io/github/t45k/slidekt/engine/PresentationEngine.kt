@@ -16,8 +16,8 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
-import io.github.t45k.slidekt.api.PresentationDsl
 import io.github.t45k.slidekt.api.PresentationOption
+import io.github.t45k.slidekt.api.PresentationSpec
 import io.github.t45k.slidekt.engine.component.Cover
 import io.github.t45k.slidekt.engine.component.Slide
 import io.github.t45k.slidekt.engine.component.SourceCode
@@ -27,17 +27,17 @@ import io.github.t45k.slidekt.engine.component.TitleTextBoxSeparator
 
 fun presentation(
     option: () -> PresentationOption = { PresentationOption() },
-    dsl: PresentationDsl.() -> Unit,
+    dsl: PresentationSpec.Builder.() -> Unit,
 ) = application {
-    PresentationApp(PresentationDsl(option()).apply(dsl))
+    PresentationApp(PresentationSpec.Builder(option()).apply(dsl).build())
 }
 
-fun handlePresentation(presentation: PresentationDsl) = application {
+fun handlePresentation(presentation: PresentationSpec) = application {
     PresentationApp(presentation)
 }
 
 @Composable
-private fun ApplicationScope.PresentationApp(presentation: PresentationDsl) {
+private fun ApplicationScope.PresentationApp(presentation: PresentationSpec) {
     val slideTransition = slideTransition(presentation.option.animation)
     val windowState = rememberWindowState()
     val backStack = remember { mutableStateListOf(if (presentation.cover != null) 0 else 1) }
@@ -64,7 +64,7 @@ private fun ApplicationScope.PresentationApp(presentation: PresentationDsl) {
     ) {
         val (_, currentSlideHeight) = calcSlideSize(
             windowState.size,
-            presentation.option.aspectRatio
+            presentation.option.aspectRatio,
         )
         val matchHeightConstraintsFirst =
             windowState.size.width / windowState.size.height > presentation.option.aspectRatio.ratio
@@ -91,7 +91,7 @@ private fun ApplicationScope.PresentationApp(presentation: PresentationDsl) {
  */
 @Composable
 internal fun SlideContent(
-    presentation: PresentationDsl,
+    presentation: PresentationSpec,
     index: Int,
     slideHeight: Dp,
     matchHeightConstraintsFirst: Boolean,
