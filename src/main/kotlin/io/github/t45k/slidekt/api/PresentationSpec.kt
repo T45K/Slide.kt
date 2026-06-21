@@ -11,6 +11,8 @@ data class PresentationSpec(
     val cover: CoverSpec?,
     val slides: List<SlideSpec>,
 ) {
+    val hasCaption: Boolean get() = slides.any { it.caption != null }
+
     @SlideDsl
     class Builder(private val option: PresentationOption) {
         private var cover: CoverSpec? = null
@@ -104,6 +106,7 @@ data class SlideSpec(
     val textBox: TextBoxSpec? = null,
     val imagePath: Path? = null,
     val code: String? = null,
+    val caption: String? = null,
 ) {
 
     @SlideDsl
@@ -112,6 +115,7 @@ data class SlideSpec(
         private var textBox: TextBoxSpec? = null
         private var imagePath: Path? = null
         private var code: String? = null
+        private var caption: String? = null
 
         fun title(text: String, position: Horizontal = Horizontal.CENTER) {
             title = TitleSpec(text, position)
@@ -133,11 +137,16 @@ data class SlideSpec(
             code = value
         }
 
+        fun caption(text: String) {
+            caption = text
+        }
+
         fun build(): SlideSpec = SlideSpec(
             title = title,
             textBox = textBox,
             imagePath = imagePath,
             code = code,
+            caption = caption,
         )
     }
 }
